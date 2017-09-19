@@ -11,7 +11,7 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_boolean('use_fp16', False,
                             """Train the model using fp16.""")
-tf.app.flags.DEFINE_float('test_size', 0.3,
+tf.app.flags.DEFINE_float('test_ratio', 0.2,
                             """test size""")
 tf.app.flags.DEFINE_float('random_state', 42,
                             """random_state""")
@@ -23,8 +23,12 @@ TOWER_NAME = 'tower'
 
 # Variables that affect learning rate.
 DECAY_STEPS = 3000
-INITIAL_LEARNING_RATE = 0.1       # Initial learning rate.
+INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
 LEARNING_RATE_DECAY_FACTOR = 0.01  # Learning rate decay factor.
+
+# Constants describing the training process.
+MOVING_AVERAGE_DECAY = 0.9999     # The decay to use for the moving average.
+
 
 def _activation_summary(x):
   """Helper to create summaries for activations.
@@ -62,7 +66,7 @@ def _variable_on_cpu(name, shape, initializer):
   return var
 
 
-def _variable_with_weight_decay(name, shape, stddev, wd):
+def _variable_with_group_weight_decay(name, shape, stddev, wd=None, reg_type='l1'):
   """Helper to create an initialized Variable with weight decay.
 
   Note that the Variable is initialized with a truncated normal distribution.
@@ -82,9 +86,30 @@ def _variable_with_weight_decay(name, shape, stddev, wd):
   var = _variable_on_cpu(
       name,
       shape,
-      tf.truncated_normal_initializer(stddev=stddev, dtype=dtype))
+      tf.contrib.layers.xavier_initializer(dtype=dtype))
+      # tf.truncated_normal_initializer(stddev=stddev, dtype=dtype))
+  
   if wd is not None:
-    weight_decay = tf.multiply(tf.nn.l2_loss(var), wd, name='weight_loss')
+    window_size, sensor_size, _, n_filter = shape
+    squeezed_var = tf.squeeze(var) # remove channel
+
+    if reg_type == 'group1':
+      kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
+      kernel_list = [tf.sqrt(tf.reduce_sum(k**2, axis=0)) for k in kernel_list]
+      l2_norm_list = [tf.reduce_sum(k) for k in kernel_list]
+
+      sqrt_coefficient = tf.sqrt(tf.constant(window_size, dtype=dtype))
+      group_loss = tf.reduce_sum(sqrt_coefficient * l2_norm_list)
+
+    elif reg_type == 'group2':
+      kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
+      unified_kernel = tf.stack(kernel_list, axis=0)
+      group_norm_list = tf.sqrt(tf.reduce_sum(unified_kernel**2, axis=0))
+
+      sqrt_coefficient = tf.sqrt(tf.constant(window_size * n_filter, dtype=dtype))
+      group_loss = tf.reduce_sum(sqrt_coefficient * group_norm_list)
+
+    weight_decay = tf.multiply(group_loss, wd, name='weight_group_loss')
     tf.add_to_collection('losses', weight_decay)
   return var
 
@@ -111,12 +136,33 @@ def inputs(data_fname, train=True):
   raw_data = pickle.load(open(data_fname, 'rb'))
   signals, labels = raw_data['signals'], raw_data['labels']
 
+  print(signals.shape)
+
+  # signals = signals.reshape(signals.shape[0], -1)
+
+  # split into trn and tst
   signals_trn, signals_tst, labels_trn, labels_tst = train_test_split(
-    signals, labels, test_size=FLAGS.test_size, random_state=FLAGS.random_state, 
-    stratify=labels)
+    signals, labels, test_size=FLAGS.test_ratio, random_state=FLAGS.random_state, 
+    stratify=labels[:, 1])
+
+  print(labels.sum(axis=0), labels_trn.sum(axis=0), labels_tst.sum(axis=0))
   
+  # print(signals_trn.shape, signals_tst.shape)
+  
+  def tf_constant(signals, labels):
+    input_signals, input_labels = tf.constant(signals), tf.constant(labels)
+
+    one_channel_shape = list(signals.shape) + [1]
+    input_signals = tf.reshape(input_signals, one_channel_shape, 
+                              name='reshaped_input_signal')
+
+    if FLAGS.use_fp16:
+      input_signals = tf.cast(input_signals, tf.float16)
+      input_labels = tf.cast(input_labels, tf.float16)
+    
+    return input_signals, input_labels
+
   if train:
-    signals, labels = signals_trn, labels_trn
     def oversample(X, y, n_oversample):
       fault_idx = np.where(y[:, 1]==1)[0]
       X_fault = X[fault_idx, :]
@@ -125,33 +171,39 @@ def inputs(data_fname, train=True):
         X = np.concatenate((X, X_fault), axis=0)
         y = np.concatenate((y, y_fault), axis=0)
       return X, y
-    signals, labels = oversample(signals, labels, 10)
 
+    print(signals_trn.shape, labels_trn.shape)
+
+    signals_trn, labels_trn = oversample(signals_trn, labels_trn, 10)
+
+    print(signals_trn.shape, labels_trn.shape)
+
+    signals_trn, signals_val, labels_trn, labels_val = train_test_split(
+      signals_trn, labels_trn, test_size=FLAGS.test_ratio, random_state=FLAGS.random_state, 
+      stratify=labels_trn[:, 1])
+    
+    print(signals_trn.shape, labels_trn.shape)
+    print(signals_val.shape, labels_val.shape)
+
+    FLAGS.batch_size = signals_trn.shape[0]
+    
+    input_signals_trn, input_labels_trn = tf_constant(signals_trn, labels_trn)
+    input_signals_val, input_labels_val = tf_constant(signals_val, labels_val)
+    return input_signals_trn, input_labels_trn, input_signals_val, input_labels_val
+    
   else:
-    signals, labels = signals_tst, labels_tst
-
-  FLAGS.batch_size, FLAGS.time_size, FLAGS.sensor_size = signals.shape
-
-  print(signals.shape, labels.shape)
-
-  signals_trn, signals_val, labels_trn, labels_val = train_test_split(
-    signals, labels, test_size=FLAGS.test_size, random_state=FLAGS.random_state, 
-    stratify=labels)
-
-  input_signals = tf.constant(signals)
-  input_labels = tf.constant(labels)
-
-  one_channel_shape = list(signals.shape) + [1]
-  input_signals = tf.reshape(input_signals, one_channel_shape, 
-                             name='reshaped_input_signal')
-
-  if FLAGS.use_fp16:
-    input_signals = tf.cast(input_signals, tf.float16)
-    input_labels = tf.cast(input_labels, tf.float16)
-  return input_signals, input_labels
+    signals_tst, labels_tst = tf_constant(signals_tst, labels_tst)
+    return signals_tst, labels_tst
 
 
-def inference_backup(signals):
+def inference_nn(signals):
+  hidden = tf.contrib.layers.fully_connected(signals, 100, scope='hidden_node1')
+  # hidden = tf.contrib.layers.fully_connected(hidden, 50, scope='hidden_node2')
+  # hidden = tf.contrib.layers.fully_connected(hidden, 100, scope='hidden_node3')
+  return tf.contrib.layers.linear(hidden, 2, scope='final_node')
+  # return tf.contrib.layers.linear(hidden, 2, scope='final_node', activation_fn=tf.nn.softmax)
+
+def inference_b(signals):
   """Build the CIFAR-10 model.
 
   Args:
@@ -161,95 +213,54 @@ def inference_backup(signals):
     Logits.
   """
 
+  batch_size, time_size, sensor_size, _ = signals.get_shape().as_list()
+
   window_size = 5
   pooling_size = 2
-  pooling_stride = 1
+  pooling_stride = 2
   n_filter = 10
-  n_hidden = 50
-  padding = 'SAME'
-  # padding = 'VALID'
+  n_hidden_list = [30]
+  padding = 'VALID'
+  n_conv = 1
 
-  # We instantiate all variables using tf.get_variable() instead of
-  # tf.Variable() in order to share variables across multiple GPU training runs.
-  # If we only ran this model on a single GPU, we could simplify this function
-  # by replacing all instances of tf.get_variable() with tf.Variable().
-  #
+  def conv_func(x, window_size, sensor_size, n_filter_in, n_filter_out, name='conv'):
+    with tf.variable_scope(name) as scope:
+      kernel = _variable_on_cpu(
+        'weights', [window_size, sensor_size, n_filter_in, n_filter_out], 
+        tf.contrib.layers.xavier_initializer())
+      biases = _variable_on_cpu(
+        'biases', [n_filter_out], tf.zeros_initializer())
+      conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='VALID')
+      pre_activation = tf.nn.bias_add(conv, biases)
+      conv_out = tf.nn.relu(pre_activation, name=scope.name)
+    return conv_out, kernel
+
   # conv1
-  with tf.variable_scope('conv1') as scope:
-    kernel = _variable_with_weight_decay('weights',
-                                         shape=[window_size, FLAGS.sensor_size, 1, n_filter],
-                                         stddev=5e-2,
-                                         wd=0.0)
-    conv = tf.nn.conv2d(signals, kernel, [1, 1, 1, 1], padding=padding)
-    biases = _variable_on_cpu('biases', [n_filter], tf.constant_initializer(0.0))
-    pre_activation = tf.nn.bias_add(conv, biases)
-    conv1 = tf.nn.relu(pre_activation, name=scope.name)
-    _activation_summary(conv1)
-
+  conv, conv_kernel = conv_func(signals, 
+    window_size, sensor_size, 1, n_filter, name='conv1')
   # pool1
-  pool1 = tf.nn.max_pool(conv1, 
-                         ksize=[1, pooling_size, 1, 1], 
-                         strides=[1, pooling_stride, 1, 1],
-                         padding=padding, name='pool1')
-  # # norm1
-  # norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
-  #                   name='norm1')
-  norm1 = pool1
+  pool = tf.nn.max_pool(conv, 
+    ksize=[1, pooling_size, 1, 1], strides=[1, pooling_stride, 1, 1], 
+    padding='VALID', name='pool1')
 
-  # conv2
-  with tf.variable_scope('conv2') as scope:
-    kernel = _variable_with_weight_decay('weights',
-                                         shape=[window_size, 1, n_filter, n_filter],
-                                         stddev=5e-2, # FLAGS.sensor_size
-                                         wd=0.0)
-    conv = tf.nn.conv2d(norm1, kernel, [1, 1, 1, 1], padding=padding)
-    biases = _variable_on_cpu('biases', [n_filter], tf.constant_initializer(0.1))
-    pre_activation = tf.nn.bias_add(conv, biases)
-    conv2 = tf.nn.relu(pre_activation, name=scope.name)
-    _activation_summary(conv2)
+  # the remained conv & pool
+  for i in range(2, n_conv + 1):
+    # conv i
+    conv, _ = conv_func(pool, window_size//2 + 1, 1, n_filter, n_filter, name='conv%d'%i)
+    # pool i
+    this_pooling_stride = max(pooling_stride//2, 1)
+    pool = tf.nn.max_pool(conv, 
+      ksize=[1, pooling_size//2, 1, 1], 
+      strides=[1, this_pooling_stride, 1, 1], 
+      padding='VALID', name='pool%d'%i)
 
-  # # norm2
-  # norm2 = tf.nn.lrn(conv2, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75,
-  #                   name='norm2')
-  norm2 = conv2
-  # pool2
-  pool2 = tf.nn.max_pool(norm2, 
-                         ksize=[1, pooling_size, 1, 1],
-                         strides=[1, pooling_stride, 1, 1], 
-                         padding=padding, name='pool2')
+  feature = tf.contrib.layers.flatten(pool, scope='flatten')
+  for i, n_hidden in enumerate(n_hidden_list):
+    feature = tf.contrib.layers.fully_connected(feature, n_hidden, scope='fully_conn%d'%i)
 
-  # local3
-  with tf.variable_scope('local3') as scope:
-    # Move everything into depth so we can perform a single matrix multiply.
-    reshape = tf.reshape(pool2, [FLAGS.batch_size, -1])
-    dim = reshape.get_shape()[1].value
-    weights = _variable_with_weight_decay('weights', shape=[dim, n_hidden],
-                                          stddev=0.04, wd=0) #0.004
-    biases = _variable_on_cpu('biases', [n_hidden], tf.constant_initializer(0.1))
-    local3 = tf.nn.relu(tf.matmul(reshape, weights) + biases, name=scope.name)
-    _activation_summary(local3)
+  logits = tf.contrib.layers.linear(feature, 2, scope='final_node')
 
-  # local4
-  with tf.variable_scope('local4') as scope:
-    weights = _variable_with_weight_decay('weights', shape=[n_hidden, n_hidden//2],
-                                          stddev=0.04, wd=0) #0.004
-    biases = _variable_on_cpu('biases', [n_hidden//2], tf.constant_initializer(0.1))
-    local4 = tf.nn.relu(tf.matmul(local3, weights) + biases, name=scope.name)
-    _activation_summary(local4)
-
-  # linear layer(WX + b),
-  # We don't apply softmax here because
-  # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
-  # and performs the softmax internally for efficiency.
-  with tf.variable_scope('softmax_linear') as scope:
-    weights = _variable_with_weight_decay('weights', [n_hidden//2, 2],
-                                          stddev=1/192.0, wd=0.0)
-    biases = _variable_on_cpu('biases', [2],
-                              tf.constant_initializer(0.0))
-    softmax_linear = tf.add(tf.matmul(local4, weights), biases, name=scope.name)
-    _activation_summary(softmax_linear)
-
-  return softmax_linear
+  return logits
 
 def inference(signals):
   """Build the CIFAR-10 model.
@@ -261,13 +272,18 @@ def inference(signals):
     Logits.
   """
 
+  batch_size, time_size, sensor_size, _ = signals.get_shape().as_list()
+
   window_size = 5
   pooling_size = 2
-  pooling_stride = 1
+  pooling_stride = 2
   n_filter = 10
-  n_hidden = 50
-  padding = 'SAME'
-  # padding = 'VALID'
+  n_hidden = 30
+  # padding = 'SAME'
+  padding = 'VALID'
+  
+  wd = 0.01
+  reg_type = 'group2'
 
   # We instantiate all variables using tf.get_variable() instead of
   # tf.Variable() in order to share variables across multiple GPU training runs.
@@ -276,10 +292,11 @@ def inference(signals):
   #
   # conv1
   with tf.variable_scope('conv1') as scope:
-    kernel = _variable_with_weight_decay('weights',
-                                         shape=[window_size, FLAGS.sensor_size, 1, n_filter],
+    kernel = _variable_with_group_weight_decay('weights',
+                                         shape=[window_size, sensor_size, 1, n_filter],
                                          stddev=5e-2,
-                                         wd=0.0)
+                                         wd=wd,
+                                         reg_type=reg_type)
     conv = tf.nn.conv2d(signals, kernel, [1, 1, 1, 1], padding=padding)
     biases = _variable_on_cpu('biases', [n_filter], tf.constant_initializer(0.0))
     pre_activation = tf.nn.bias_add(conv, biases)
@@ -295,10 +312,10 @@ def inference(signals):
   # local3
   with tf.variable_scope('local3') as scope:
     # Move everything into depth so we can perform a single matrix multiply.
-    reshape = tf.reshape(pool1, [FLAGS.batch_size, -1])
+    reshape = tf.reshape(pool1, [batch_size, -1])
     dim = reshape.get_shape()[1].value
-    weights = _variable_with_weight_decay('weights', shape=[dim, n_hidden],
-                                          stddev=0.04, wd=0.0) #0.004
+    weights = _variable_with_group_weight_decay('weights', shape=[dim, n_hidden],
+                                          stddev=0.04)
     biases = _variable_on_cpu('biases', [n_hidden], tf.constant_initializer(0.1))
     local3 = tf.nn.relu(tf.matmul(reshape, weights) + biases, name=scope.name)
     _activation_summary(local3)
@@ -308,8 +325,8 @@ def inference(signals):
   # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
   # and performs the softmax internally for efficiency.
   with tf.variable_scope('softmax_linear') as scope:
-    weights = _variable_with_weight_decay('weights', [n_hidden, 2],
-                                          stddev=1/192.0, wd=0.0)
+    weights = _variable_with_group_weight_decay('weights', [n_hidden, 2],
+                                          stddev=1/192.0)
     biases = _variable_on_cpu('biases', [2],
                               tf.constant_initializer(0.0))
     softmax_linear = tf.add(tf.matmul(local3, weights), biases, name=scope.name)
@@ -331,19 +348,22 @@ def loss(logits, labels):
     Loss tensor of type float.
   """
   # Calculate the average cross entropy loss across the batch.
-  labels = tf.cast(labels, tf.int64)
+  # labels = tf.cast(labels, tf.int64)
   cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
       labels=labels, logits=logits, name='cross_entropy_per_example')
+  # cross_entropy = tf.losses.softmax_cross_entropy(
+  #     onehot_labels=labels, logits=logits, scope='cross_entropy_per_example')
   cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy')
 
-  # minor_weight = 1
+  # minor_weight = 5
   # weight_vector = 1 + labels[:, 1] * (minor_weight - 1)
   # cross_entropy_mean = tf.losses.softmax_cross_entropy(
   #     onehot_labels=labels,
   #     logits=logits,
   #     weights=weight_vector,
   #     label_smoothing=0,
-  #     scope='weighted_xe',
+  #     scope='cross_entropy_weighted',
+  #     loss_collection=None
   # )
   tf.add_to_collection('losses', cross_entropy_mean)
 
@@ -378,10 +398,6 @@ def _add_loss_summaries(total_loss):
 
   return loss_averages_op
 
-# Constants describing the training process.
-MOVING_AVERAGE_DECAY = 0.9999     # The decay to use for the moving average.
-
-
 
 def train(total_loss, global_step):
   """Train CIFAR-10 model.
@@ -396,20 +412,21 @@ def train(total_loss, global_step):
   Returns:
     train_op: op for training.
   """
-  # Decay the learning rate exponentially based on the number of steps.
-  lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
-                                  global_step,
-                                  DECAY_STEPS,
-                                  LEARNING_RATE_DECAY_FACTOR,
-                                  staircase=True)
-  tf.summary.scalar('learning_rate', lr)
+  # # Decay the learning rate exponentially based on the number of steps.
+  # lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
+  #                                 global_step,
+  #                                 DECAY_STEPS,
+  #                                 LEARNING_RATE_DECAY_FACTOR,
+  #                                 staircase=True)
+  # tf.summary.scalar('learning_rate', lr)
 
   # Generate moving averages of all losses and associated summaries.
   loss_averages_op = _add_loss_summaries(total_loss)
 
   # Compute gradients.
   with tf.control_dependencies([loss_averages_op]):
-    opt = tf.train.GradientDescentOptimizer(lr)
+    # opt = tf.train.GradientDescentOptimizer(lr)
+    opt = tf.train.AdamOptimizer(INITIAL_LEARNING_RATE)
     grads = opt.compute_gradients(total_loss)
 
   # Apply gradients.

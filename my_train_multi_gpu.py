@@ -104,7 +104,7 @@ def train():
     opt = tf.train.GradientDescentOptimizer(lr)
 
     # Get images and labels for CIFAR-10.
-    signals, labels = my_graph.inputs(FLAGS.data_fname, train=True)
+    signals, labels, _, _ = my_graph.inputs(FLAGS.data_fname, train=True)
     batch_queue = tf.contrib.slim.prefetch_queue.prefetch_queue(
           [signals, labels], capacity=2 * FLAGS.num_gpus)
     # Calculate the gradients for each model tower.
@@ -188,7 +188,7 @@ def train():
 
       assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
 
-      if step % 10 == 0:
+      if step % 100 == 0:
         num_examples_per_step = FLAGS.batch_size * FLAGS.num_gpus
         examples_per_sec = num_examples_per_step / duration
         sec_per_batch = duration / FLAGS.num_gpus

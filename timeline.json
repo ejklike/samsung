@@ -1,0 +1,5179 @@
+{
+    "traceEvents": [
+        {
+            "name": "process_name",
+            "ph": "M",
+            "pid": 0,
+            "args": {
+                "name": "Allocators"
+            }
+        },
+        {
+            "name": "process_name",
+            "ph": "M",
+            "pid": 1,
+            "args": {
+                "name": "/job:localhost/replica:0/task:0/cpu:0 Compute"
+            }
+        },
+        {
+            "name": "process_name",
+            "ph": "M",
+            "pid": 2,
+            "args": {
+                "name": "/job:localhost/replica:0/task:0/cpu:0 Tensors"
+            }
+        },
+        {
+            "name": "process_name",
+            "ph": "M",
+            "pid": 3,
+            "args": {
+                "name": "/job:localhost/replica:0/task:0/gpu:0 Compute"
+            }
+        },
+        {
+            "name": "process_name",
+            "ph": "M",
+            "pid": 4,
+            "args": {
+                "name": "/job:localhost/replica:0/task:0/gpu:0 Tensors"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041733,
+            "dur": 9,
+            "args": {
+                "name": "_SOURCE",
+                "op": "NoOp"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041801,
+            "dur": 22,
+            "args": {
+                "name": "global_step",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041803,
+            "dur": 28,
+            "args": {
+                "name": "inference/conv1/weights",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041831,
+            "dur": 6,
+            "args": {
+                "name": "global_step/read",
+                "op": "Identity",
+                "input0": "global_step"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041816,
+            "dur": 20,
+            "args": {
+                "name": "inference/conv1/biases",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "_Retval",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041829,
+            "dur": 12,
+            "args": {
+                "name": "_retval_global_step_0_0",
+                "op": "_Retval",
+                "input0": "global_step"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "global_step",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041823,
+            "id": 0
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "global_step",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041829,
+            "id": 0
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041837,
+            "dur": 8,
+            "args": {
+                "name": "inference/conv1/weights/read",
+                "op": "Identity",
+                "input0": "inference/conv1/weights"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360041820,
+            "dur": 24,
+            "args": {
+                "name": "inference/softmax_linear/weights",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041843,
+            "dur": 8,
+            "args": {
+                "name": "inference/conv1/biases/read",
+                "op": "Identity",
+                "input0": "inference/conv1/biases"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041836,
+            "id": 1
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041843,
+            "id": 1
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041827,
+            "dur": 19,
+            "args": {
+                "name": "inference/softmax_linear/biases",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041852,
+            "dur": 17,
+            "args": {
+                "name": "inference/conv1/biases/ExponentialMovingAverage",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041868,
+            "dur": 10,
+            "args": {
+                "name": "inference/softmax_linear/weights/read",
+                "op": "Identity",
+                "input0": "inference/softmax_linear/weights"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360041844,
+            "id": 2
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041868,
+            "id": 2
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041854,
+            "dur": 36,
+            "args": {
+                "name": "inference/conv1/weights/ExponentialMovingAverage",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 6,
+            "ts": 1505783360041819,
+            "dur": 72,
+            "args": {
+                "name": "inference/local3/weights",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041874,
+            "dur": 24,
+            "args": {
+                "name": "inference/conv1/biases/ExponentialMovingAverage/read",
+                "op": "Identity",
+                "input0": "inference/conv1/biases/ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041872,
+            "dur": 29,
+            "args": {
+                "name": "inference/softmax_linear/biases/read",
+                "op": "Identity",
+                "input0": "inference/softmax_linear/biases"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041846,
+            "id": 3
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041872,
+            "id": 3
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041895,
+            "dur": 8,
+            "args": {
+                "name": "inference/conv1/weights/ExponentialMovingAverage/read",
+                "op": "Identity",
+                "input0": "inference/conv1/weights/ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041890,
+            "id": 4
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041895,
+            "id": 4
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041901,
+            "dur": 13,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub_1",
+                "op": "Sub",
+                "input0": "inference/conv1/biases/ExponentialMovingAverage/read",
+                "input1": "inference/conv1/biases/read"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 7,
+            "ts": 1505783360041819,
+            "dur": 94,
+            "args": {
+                "name": "inference/local3/biases",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041909,
+            "dur": 10,
+            "args": {
+                "name": "Const_1",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041900,
+            "dur": 24,
+            "args": {
+                "name": "inference/local3/weights/read",
+                "op": "Identity",
+                "input0": "inference/local3/weights"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights",
+            "pid": 1,
+            "tid": 6,
+            "ts": 1505783360041891,
+            "id": 5
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041900,
+            "id": 5
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041902,
+            "dur": 25,
+            "args": {
+                "name": "inference/local3/biases/ExponentialMovingAverage",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360041902,
+            "dur": 27,
+            "args": {
+                "name": "inference/softmax_linear/weights/ExponentialMovingAverage",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041929,
+            "dur": 7,
+            "args": {
+                "name": "Const_3",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041946,
+            "dur": 6,
+            "args": {
+                "name": "inference/local3/biases/ExponentialMovingAverage/read",
+                "op": "Identity",
+                "input0": "inference/local3/biases/ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041927,
+            "id": 6
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041946,
+            "id": 6
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041944,
+            "dur": 8,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg/sub/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041920,
+            "dur": 10,
+            "args": {
+                "name": "inference/local3/biases/read",
+                "op": "Identity",
+                "input0": "inference/local3/biases"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases",
+            "pid": 1,
+            "tid": 7,
+            "ts": 1505783360041913,
+            "id": 7
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041920,
+            "id": 7
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041929,
+            "dur": 26,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg/sub_1",
+                "op": "Sub",
+                "input0": "inference/conv1/weights/ExponentialMovingAverage/read",
+                "input1": "inference/conv1/weights/read"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041903,
+            "id": 8
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041929,
+            "id": 8
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041845,
+            "id": 9
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041929,
+            "id": 9
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 6,
+            "ts": 1505783360041910,
+            "dur": 48,
+            "args": {
+                "name": "inference/softmax_linear/biases/ExponentialMovingAverage",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041954,
+            "dur": 7,
+            "args": {
+                "name": "inference/softmax_linear/weights/ExponentialMovingAverage/read",
+                "op": "Identity",
+                "input0": "inference/softmax_linear/weights/ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360041929,
+            "id": 10
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041954,
+            "id": 10
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041957,
+            "dur": 7,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041963,
+            "dur": 6,
+            "args": {
+                "name": "inference/softmax_linear/biases/ExponentialMovingAverage/read",
+                "op": "Identity",
+                "input0": "inference/softmax_linear/biases/ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 6,
+            "ts": 1505783360041958,
+            "id": 11
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041963,
+            "id": 11
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041955,
+            "dur": 15,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_3/sub_1",
+                "op": "Sub",
+                "input0": "inference/local3/biases/ExponentialMovingAverage/read",
+                "input1": "inference/local3/biases/read"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041952,
+            "id": 12
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041955,
+            "id": 12
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/read",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041930,
+            "id": 13
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/read",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041955,
+            "id": 13
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 1,
+            "tid": 8,
+            "ts": 1505783360041872,
+            "dur": 36,
+            "args": {
+                "name": "inference/local3/weights/ExponentialMovingAverage",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041973,
+            "dur": 14,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub_1",
+                "op": "Sub",
+                "input0": "inference/softmax_linear/biases/ExponentialMovingAverage/read",
+                "input1": "inference/softmax_linear/biases/read"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/read",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041901,
+            "id": 14
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041973,
+            "id": 14
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041964,
+            "dur": 13,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub_1",
+                "op": "Sub",
+                "input0": "inference/softmax_linear/weights/ExponentialMovingAverage/read",
+                "input1": "inference/softmax_linear/weights/read"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041961,
+            "id": 15
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041964,
+            "id": 15
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041878,
+            "id": 16
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041964,
+            "id": 16
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041968,
+            "dur": 6,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_2/sub/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042000,
+            "dur": 19,
+            "args": {
+                "name": "inference/local3/weights/ExponentialMovingAverage/read",
+                "op": "Identity",
+                "input0": "inference/local3/weights/ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 8,
+            "ts": 1505783360041908,
+            "id": 17
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042000,
+            "id": 17
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042055,
+            "dur": 16,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_3/sub/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042057,
+            "dur": 19,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_2/sub_1",
+                "op": "Sub",
+                "input0": "inference/local3/weights/ExponentialMovingAverage/read",
+                "input1": "inference/local3/weights/read"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042019,
+            "id": 18
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/ExponentialMovingAverage/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042057,
+            "id": 18
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041924,
+            "id": 19
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042057,
+            "id": 19
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042075,
+            "dur": 4,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042083,
+            "dur": 4,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042089,
+            "dur": 5,
+            "args": {
+                "name": "reshaped_input_signal_1/_0__cf__19",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042104,
+            "dur": 4,
+            "args": {
+                "name": "reshaped_input_signal/_1__cf__20",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042871,
+            "dur": 10,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg/sub",
+                "op": "Sub",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg/sub/x",
+                "input1": "ExponentialMovingAverage/Minimum/_195"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg/sub/x",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041952,
+            "id": 20
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg/sub/x",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042871,
+            "id": 20
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042727,
+            "id": 21
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042871,
+            "id": 21
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042886,
+            "dur": 14,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg/mul",
+                "op": "Mul",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg/sub_1",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg/sub"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg/sub_1",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041955,
+            "id": 22
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg/sub_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042886,
+            "id": 22
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042882,
+            "dur": 17,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_2/sub",
+                "op": "Sub",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_2/sub/x",
+                "input1": "ExponentialMovingAverage/Minimum/_195"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042727,
+            "id": 23
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042882,
+            "id": 23
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042882,
+            "dur": 25,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub",
+                "op": "Sub",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_1/sub/x",
+                "input1": "ExponentialMovingAverage/Minimum/_195"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub/x",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041964,
+            "id": 24
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub/x",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042882,
+            "id": 24
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042727,
+            "id": 25
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042882,
+            "id": 25
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042904,
+            "dur": 13,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg",
+                "op": "AssignSub",
+                "input0": "inference/conv1/weights/ExponentialMovingAverage",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041890,
+            "id": 26
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042904,
+            "id": 26
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042906,
+            "dur": 13,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_2/mul",
+                "op": "Mul",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_2/sub_1",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_2/sub"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042920,
+            "dur": 6,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_3/sub",
+                "op": "Sub",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_3/sub/x",
+                "input1": "ExponentialMovingAverage/Minimum/_195"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042727,
+            "id": 27
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042920,
+            "id": 27
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042917,
+            "dur": 11,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_1/mul",
+                "op": "Mul",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_1/sub_1",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_1/sub"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041914,
+            "id": 28
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_1/sub_1",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042917,
+            "id": 28
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042929,
+            "dur": 5,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_3/mul",
+                "op": "Mul",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_3/sub_1",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_3/sub"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_3/sub_1",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041970,
+            "id": 29
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_3/sub_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042929,
+            "id": 29
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042924,
+            "dur": 12,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_2",
+                "op": "AssignSub",
+                "input0": "inference/local3/weights/ExponentialMovingAverage",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_2/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 8,
+            "ts": 1505783360041908,
+            "id": 30
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042924,
+            "id": 30
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360042927,
+            "dur": 11,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub",
+                "op": "Sub",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_4/sub/x",
+                "input1": "ExponentialMovingAverage/Minimum/_195"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub/x",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042079,
+            "id": 31
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub/x",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360042927,
+            "id": 31
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042727,
+            "id": 32
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360042927,
+            "id": 32
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042932,
+            "dur": 9,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_1",
+                "op": "AssignSub",
+                "input0": "inference/conv1/biases/ExponentialMovingAverage",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_1/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041869,
+            "id": 33
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042932,
+            "id": 33
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042942,
+            "dur": 9,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_4/mul",
+                "op": "Mul",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_4/sub_1",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_4/sub"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub_1",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041977,
+            "id": 34
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042942,
+            "id": 34
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360042938,
+            "id": 35
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/sub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042942,
+            "id": 35
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360042918,
+            "dur": 46,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub",
+                "op": "Sub",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_5/sub/x",
+                "input1": "ExponentialMovingAverage/Minimum/_195"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub/x",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042087,
+            "id": 36
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub/x",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360042918,
+            "id": 36
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042727,
+            "id": 37
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/Minimum",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360042918,
+            "id": 37
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042937,
+            "dur": 31,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_3",
+                "op": "AssignSub",
+                "input0": "inference/local3/biases/ExponentialMovingAverage",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_3/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041927,
+            "id": 38
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042937,
+            "id": 38
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_3/mul",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042934,
+            "id": 39
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_3/mul",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360042937,
+            "id": 39
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042972,
+            "dur": 10,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_5/mul",
+                "op": "Mul",
+                "input0": "ExponentialMovingAverage/AssignMovingAvg_5/sub_1",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_5/sub"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360042964,
+            "id": 40
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_5/sub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042972,
+            "id": 40
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042985,
+            "dur": 7,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_5",
+                "op": "AssignSub",
+                "input0": "inference/softmax_linear/biases/ExponentialMovingAverage",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_5/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 6,
+            "ts": 1505783360041958,
+            "id": 41
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042985,
+            "id": 41
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042954,
+            "dur": 70,
+            "args": {
+                "name": "ExponentialMovingAverage/AssignMovingAvg_4",
+                "op": "AssignSub",
+                "input0": "inference/softmax_linear/weights/ExponentialMovingAverage",
+                "input1": "ExponentialMovingAverage/AssignMovingAvg_4/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360041929,
+            "id": 42
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/ExponentialMovingAverage",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042954,
+            "id": 42
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/mul",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360042951,
+            "id": 43
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialMovingAverage/AssignMovingAvg_4/mul",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360042954,
+            "id": 43
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360043036,
+            "dur": 8,
+            "args": {
+                "name": "ExponentialMovingAverage",
+                "op": "NoOp",
+                "input0": "^ExponentialMovingAverage/AssignMovingAvg",
+                "input1": "^ExponentialMovingAverage/AssignMovingAvg_1",
+                "input2": "^ExponentialMovingAverage/AssignMovingAvg_2",
+                "input3": "^ExponentialMovingAverage/AssignMovingAvg_3",
+                "input4": "^ExponentialMovingAverage/AssignMovingAvg_4",
+                "input5": "^ExponentialMovingAverage/AssignMovingAvg_5"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360043051,
+            "dur": 7,
+            "args": {
+                "name": "ExponentialMovingAverage/_214",
+                "op": "Const",
+                "input0": "^ExponentialMovingAverage"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "_Retval",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360044761,
+            "dur": 6,
+            "args": {
+                "name": "_retval_total_loss_0_1",
+                "op": "_Retval",
+                "input0": "total_loss/_219"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "total_loss",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044541,
+            "id": 44
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "total_loss",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360044761,
+            "id": 44
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "_Retval",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360044804,
+            "dur": 3,
+            "args": {
+                "name": "_retval_total_loss_1_0_2",
+                "op": "_Retval",
+                "input0": "total_loss_1/_221"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "total_loss_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044578,
+            "id": 45
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "total_loss_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360044804,
+            "id": 45
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ApplyGradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045906,
+            "dur": 26,
+            "args": {
+                "name": "GradientDescent/update_inference/softmax_linear/biases/ApplyGradientDescent",
+                "op": "ApplyGradientDescent",
+                "input0": "inference/softmax_linear/biases",
+                "input1": "ExponentialDecay/_197",
+                "input2": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency_1/_199"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041846,
+            "id": 46
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045906,
+            "id": 46
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043388,
+            "id": 47
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045906,
+            "id": 47
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045653,
+            "id": 48
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045906,
+            "id": 48
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ApplyGradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045980,
+            "dur": 11,
+            "args": {
+                "name": "GradientDescent/update_inference/softmax_linear/weights/ApplyGradientDescent",
+                "op": "ApplyGradientDescent",
+                "input0": "inference/softmax_linear/weights",
+                "input1": "ExponentialDecay/_197",
+                "input2": "gradients/inference/softmax_linear/MatMul_grad/tuple/control_dependency_1/_201"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights",
+            "pid": 1,
+            "tid": 4,
+            "ts": 1505783360041844,
+            "id": 49
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045980,
+            "id": 49
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043388,
+            "id": 50
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045980,
+            "id": 50
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/inference/softmax_linear/MatMul_grad/tuple/control_dependency_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045861,
+            "id": 51
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/inference/softmax_linear/MatMul_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360045980,
+            "id": 51
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ApplyGradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046282,
+            "dur": 18,
+            "args": {
+                "name": "GradientDescent/update_inference/local3/biases/ApplyGradientDescent",
+                "op": "ApplyGradientDescent",
+                "input0": "inference/local3/biases",
+                "input1": "ExponentialDecay/_197",
+                "input2": "gradients/inference/local3/add_grad/tuple/control_dependency_1/_203"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases",
+            "pid": 1,
+            "tid": 7,
+            "ts": 1505783360041913,
+            "id": 52
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046282,
+            "id": 52
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043388,
+            "id": 53
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046282,
+            "id": 53
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/inference/local3/add_grad/tuple/control_dependency_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046098,
+            "id": 54
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/inference/local3/add_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046282,
+            "id": 54
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ApplyGradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046373,
+            "dur": 12,
+            "args": {
+                "name": "GradientDescent/update_inference/local3/weights/ApplyGradientDescent",
+                "op": "ApplyGradientDescent",
+                "input0": "inference/local3/weights",
+                "input1": "ExponentialDecay/_197",
+                "input2": "gradients/inference/local3/MatMul_grad/tuple/control_dependency_1/_205"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights",
+            "pid": 1,
+            "tid": 6,
+            "ts": 1505783360041891,
+            "id": 55
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046373,
+            "id": 55
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043388,
+            "id": 56
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046373,
+            "id": 56
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/inference/local3/MatMul_grad/tuple/control_dependency_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046292,
+            "id": 57
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/inference/local3/MatMul_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360046373,
+            "id": 57
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ApplyGradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047237,
+            "dur": 7,
+            "args": {
+                "name": "GradientDescent/update_inference/conv1/biases/ApplyGradientDescent",
+                "op": "ApplyGradientDescent",
+                "input0": "inference/conv1/biases",
+                "input1": "ExponentialDecay/_197",
+                "input2": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency_1/_207"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041836,
+            "id": 58
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047237,
+            "id": 58
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043388,
+            "id": 59
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047237,
+            "id": 59
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046688,
+            "id": 60
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047237,
+            "id": 60
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ApplyGradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047281,
+            "dur": 14,
+            "args": {
+                "name": "GradientDescent/update_inference/conv1/weights/ApplyGradientDescent",
+                "op": "ApplyGradientDescent",
+                "input0": "inference/conv1/weights",
+                "input1": "ExponentialDecay/_197",
+                "input2": "gradients/inference/conv1/Conv2D_grad/tuple/control_dependency_1/_209"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041831,
+            "id": 61
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047281,
+            "id": 61
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043388,
+            "id": 62
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047281,
+            "id": 62
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/inference/conv1/Conv2D_grad/tuple/control_dependency_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360047220,
+            "id": 63
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/inference/conv1/Conv2D_grad/tuple/control_dependency_1",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047281,
+            "id": 63
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047299,
+            "dur": 3,
+            "args": {
+                "name": "GradientDescent/update",
+                "op": "NoOp",
+                "input0": "^GradientDescent/update_inference/conv1/weights/ApplyGradientDescent",
+                "input1": "^GradientDescent/update_inference/conv1/biases/ApplyGradientDescent",
+                "input2": "^GradientDescent/update_inference/local3/weights/ApplyGradientDescent",
+                "input3": "^GradientDescent/update_inference/local3/biases/ApplyGradientDescent",
+                "input4": "^GradientDescent/update_inference/softmax_linear/weights/ApplyGradientDescent",
+                "input5": "^GradientDescent/update_inference/softmax_linear/biases/ApplyGradientDescent"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047307,
+            "dur": 7,
+            "args": {
+                "name": "GradientDescent/value",
+                "op": "Const",
+                "input0": "^GradientDescent/update"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignAdd",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047317,
+            "dur": 6,
+            "args": {
+                "name": "GradientDescent",
+                "op": "AssignAdd",
+                "input0": "global_step",
+                "input1": "GradientDescent/value"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047326,
+            "dur": 4,
+            "args": {
+                "name": "GradientDescent/_210",
+                "op": "Const",
+                "input0": "^GradientDescent"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360041780,
+            "dur": 19,
+            "args": {
+                "name": "_SOURCE",
+                "op": "NoOp"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042031,
+            "dur": 12,
+            "args": {
+                "name": "inference/local3/Reshape/shape",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042047,
+            "dur": 7,
+            "args": {
+                "name": "inference/local3_1/Reshape/shape",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042057,
+            "dur": 7,
+            "args": {
+                "name": "Const_6",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042067,
+            "dur": 8,
+            "args": {
+                "name": "ExponentialDecay/learning_rate",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042079,
+            "dur": 6,
+            "args": {
+                "name": "ExponentialDecay/Cast_1/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042088,
+            "dur": 7,
+            "args": {
+                "name": "ExponentialDecay/Cast_2/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042097,
+            "dur": 11,
+            "args": {
+                "name": "cross_entropy/avg",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042114,
+            "dur": 64,
+            "args": {
+                "name": "cross_entropy_1/avg",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "VariableV2",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042187,
+            "dur": 19,
+            "args": {
+                "name": "total_loss/avg",
+                "op": "VariableV2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042209,
+            "dur": 6,
+            "args": {
+                "name": "ExponentialMovingAverage/decay",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042216,
+            "dur": 5,
+            "args": {
+                "name": "ExponentialMovingAverage/add/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042222,
+            "dur": 4,
+            "args": {
+                "name": "ExponentialMovingAverage/add_1/x",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042228,
+            "dur": 5,
+            "args": {
+                "name": "avg/AssignMovingAvg_2/sub/_0__cf__21",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042234,
+            "dur": 6,
+            "args": {
+                "name": "Slice_2/_1__cf__22",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042241,
+            "dur": 6,
+            "args": {
+                "name": "concat/_3__cf__24",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042248,
+            "dur": 6,
+            "args": {
+                "name": "Slice_5/_5__cf__26",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042279,
+            "dur": 6,
+            "args": {
+                "name": "cross_entropy/avg/read",
+                "op": "Identity",
+                "input0": "cross_entropy/avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042287,
+            "dur": 6,
+            "args": {
+                "name": "cross_entropy_1/avg/read",
+                "op": "Identity",
+                "input0": "cross_entropy_1/avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042296,
+            "dur": 4,
+            "args": {
+                "name": "total_loss/avg/read",
+                "op": "Identity",
+                "input0": "total_loss/avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Cast",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360042265,
+            "dur": 133,
+            "args": {
+                "name": "ExponentialDecay/Cast",
+                "op": "Cast",
+                "input0": "global_step/read/_193"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "global_step/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041837,
+            "id": 64
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "global_step/read",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360042265,
+            "id": 64
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Add",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042406,
+            "dur": 201,
+            "args": {
+                "name": "ExponentialMovingAverage/add",
+                "op": "Add",
+                "input0": "ExponentialMovingAverage/add/x",
+                "input1": "ExponentialMovingAverage/num_updates"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Add",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042612,
+            "dur": 38,
+            "args": {
+                "name": "ExponentialMovingAverage/add_1",
+                "op": "Add",
+                "input0": "ExponentialMovingAverage/add_1/x",
+                "input1": "ExponentialMovingAverage/num_updates"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "RealDiv",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042655,
+            "dur": 35,
+            "args": {
+                "name": "ExponentialMovingAverage/truediv",
+                "op": "RealDiv",
+                "input0": "ExponentialMovingAverage/add",
+                "input1": "ExponentialMovingAverage/add_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Minimum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042694,
+            "dur": 33,
+            "args": {
+                "name": "ExponentialMovingAverage/Minimum",
+                "op": "Minimum",
+                "input0": "ExponentialMovingAverage/decay",
+                "input1": "ExponentialMovingAverage/truediv"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Cast",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042740,
+            "dur": 103,
+            "args": {
+                "name": "Cast_3",
+                "op": "Cast",
+                "input0": "Const_3/_163"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Const_3",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041936,
+            "id": 65
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Const_3",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042740,
+            "id": 65
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042850,
+            "dur": 9,
+            "args": {
+                "name": "Reshape_4",
+                "op": "Reshape",
+                "input0": "Cast_3",
+                "input1": "concat_3"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Cast",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360042781,
+            "dur": 122,
+            "args": {
+                "name": "Cast_1",
+                "op": "Cast",
+                "input0": "Const_1/_179"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Const_1",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041919,
+            "id": 66
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Const_1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360042781,
+            "id": 66
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042910,
+            "dur": 10,
+            "args": {
+                "name": "Reshape_1",
+                "op": "Reshape",
+                "input0": "Cast_1",
+                "input1": "concat_1"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Cast_1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360042903,
+            "id": 67
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Cast_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042910,
+            "id": 67
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Cast",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043033,
+            "dur": 75,
+            "args": {
+                "name": "ExponentialDecay/Cast_1",
+                "op": "Cast",
+                "input0": "ExponentialDecay/Cast_1/x/_161"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "RealDiv",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043113,
+            "dur": 108,
+            "args": {
+                "name": "ExponentialDecay/truediv",
+                "op": "RealDiv",
+                "input0": "ExponentialDecay/Cast",
+                "input1": "ExponentialDecay/Cast_1"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay/Cast",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360042398,
+            "id": 68
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay/Cast",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043113,
+            "id": 68
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Floor",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043225,
+            "dur": 42,
+            "args": {
+                "name": "ExponentialDecay/Floor",
+                "op": "Floor",
+                "input0": "ExponentialDecay/truediv"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Pow",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043270,
+            "dur": 71,
+            "args": {
+                "name": "ExponentialDecay/Pow",
+                "op": "Pow",
+                "input0": "ExponentialDecay/Cast_2/x",
+                "input1": "ExponentialDecay/Floor"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043359,
+            "dur": 14,
+            "args": {
+                "name": "ExponentialMovingAverage/_217",
+                "op": "Identity",
+                "input0": "ExponentialMovingAverage/_216"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043346,
+            "dur": 42,
+            "args": {
+                "name": "ExponentialDecay",
+                "op": "Mul",
+                "input0": "ExponentialDecay/learning_rate",
+                "input1": "ExponentialDecay/Pow"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay/learning_rate",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042075,
+            "id": 69
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay/learning_rate",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043346,
+            "id": 69
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay/Pow",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043341,
+            "id": 70
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "ExponentialDecay/Pow",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043346,
+            "id": 70
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Conv2D",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043079,
+            "dur": 377,
+            "args": {
+                "name": "inference/conv1_1/Conv2D",
+                "op": "Conv2D",
+                "input0": "reshaped_input_signal_1/_165",
+                "input1": "inference/conv1/weights/read/_167"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041845,
+            "id": 71
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043079,
+            "id": 71
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "BiasAdd",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043471,
+            "dur": 85,
+            "args": {
+                "name": "inference/conv1_1/BiasAdd",
+                "op": "BiasAdd",
+                "input0": "inference/conv1_1/Conv2D",
+                "input1": "inference/conv1/biases/read/_169"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1_1/Conv2D",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043456,
+            "id": 72
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1_1/Conv2D",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043471,
+            "id": 72
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041851,
+            "id": 73
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043471,
+            "id": 73
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Relu",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043561,
+            "dur": 37,
+            "args": {
+                "name": "inference/conv1_1/inference/conv1",
+                "op": "Relu",
+                "input0": "inference/conv1_1/BiasAdd"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MaxPool",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043601,
+            "dur": 60,
+            "args": {
+                "name": "inference/pool1_1",
+                "op": "MaxPool",
+                "input0": "inference/conv1_1/inference/conv1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043665,
+            "dur": 23,
+            "args": {
+                "name": "inference/local3_1/Reshape",
+                "op": "Reshape",
+                "input0": "inference/pool1_1",
+                "input1": "inference/local3_1/Reshape/shape"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Conv2D",
+            "pid": 3,
+            "tid": 3,
+            "ts": 1505783360043146,
+            "dur": 561,
+            "args": {
+                "name": "inference/conv1/Conv2D",
+                "op": "Conv2D",
+                "input0": "reshaped_input_signal/_181",
+                "input1": "inference/conv1/weights/read/_167"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041845,
+            "id": 74
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 3,
+            "tid": 3,
+            "ts": 1505783360043146,
+            "id": 74
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043691,
+            "dur": 59,
+            "args": {
+                "name": "inference/local3_1/MatMul",
+                "op": "MatMul",
+                "input0": "inference/local3_1/Reshape",
+                "input1": "inference/local3/weights/read/_171"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041924,
+            "id": 75
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043691,
+            "id": 75
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "BiasAdd",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043720,
+            "dur": 45,
+            "args": {
+                "name": "inference/conv1/BiasAdd",
+                "op": "BiasAdd",
+                "input0": "inference/conv1/Conv2D",
+                "input1": "inference/conv1/biases/read/_169"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/Conv2D",
+            "pid": 3,
+            "tid": 3,
+            "ts": 1505783360043707,
+            "id": 76
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/Conv2D",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043720,
+            "id": 76
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases/read",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360041851,
+            "id": 77
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/biases/read",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043720,
+            "id": 77
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Add",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043755,
+            "dur": 46,
+            "args": {
+                "name": "inference/local3_1/add",
+                "op": "Add",
+                "input0": "inference/local3_1/MatMul",
+                "input1": "inference/local3/biases/read/_173"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/read",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041930,
+            "id": 78
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043755,
+            "id": 78
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Relu",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043769,
+            "dur": 52,
+            "args": {
+                "name": "inference/conv1/inference/conv1",
+                "op": "Relu",
+                "input0": "inference/conv1/BiasAdd"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Relu",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043805,
+            "dur": 32,
+            "args": {
+                "name": "inference/local3_1/inference/local3",
+                "op": "Relu",
+                "input0": "inference/local3_1/add"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MaxPool",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043824,
+            "dur": 51,
+            "args": {
+                "name": "inference/pool1",
+                "op": "MaxPool",
+                "input0": "inference/conv1/inference/conv1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043878,
+            "dur": 8,
+            "args": {
+                "name": "inference/local3/Reshape",
+                "op": "Reshape",
+                "input0": "inference/pool1",
+                "input1": "inference/local3/Reshape/shape"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/pool1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043875,
+            "id": 79
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/pool1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043878,
+            "id": 79
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043841,
+            "dur": 56,
+            "args": {
+                "name": "inference/softmax_linear_1/MatMul",
+                "op": "MatMul",
+                "input0": "inference/local3_1/inference/local3",
+                "input1": "inference/softmax_linear/weights/read/_175"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3_1/inference/local3",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043837,
+            "id": 80
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3_1/inference/local3",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043841,
+            "id": 80
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041878,
+            "id": 81
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043841,
+            "id": 81
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043888,
+            "dur": 49,
+            "args": {
+                "name": "inference/local3/MatMul",
+                "op": "MatMul",
+                "input0": "inference/local3/Reshape",
+                "input1": "inference/local3/weights/read/_171"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041924,
+            "id": 82
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043888,
+            "id": 82
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Add",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043902,
+            "dur": 61,
+            "args": {
+                "name": "inference/softmax_linear_1/inference/softmax_linear",
+                "op": "Add",
+                "input0": "inference/softmax_linear_1/MatMul",
+                "input1": "inference/softmax_linear/biases/read/_177"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear_1/MatMul",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043897,
+            "id": 83
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear_1/MatMul",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043902,
+            "id": 83
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/read",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041901,
+            "id": 84
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/read",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043902,
+            "id": 84
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043968,
+            "dur": 9,
+            "args": {
+                "name": "Reshape_3",
+                "op": "Reshape",
+                "input0": "inference/softmax_linear_1/inference/softmax_linear",
+                "input1": "concat_2"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear_1/inference/softmax_linear",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043963,
+            "id": 85
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear_1/inference/softmax_linear",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043968,
+            "id": 85
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Add",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043941,
+            "dur": 39,
+            "args": {
+                "name": "inference/local3/add",
+                "op": "Add",
+                "input0": "inference/local3/MatMul",
+                "input1": "inference/local3/biases/read/_173"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043937,
+            "id": 86
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/MatMul",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043941,
+            "id": 86
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/read",
+            "pid": 1,
+            "tid": 5,
+            "ts": 1505783360041930,
+            "id": 87
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/biases/read",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043941,
+            "id": 87
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Relu",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043984,
+            "dur": 29,
+            "args": {
+                "name": "inference/local3/inference/local3",
+                "op": "Relu",
+                "input0": "inference/local3/add"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/add",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360043980,
+            "id": 88
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/add",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043984,
+            "id": 88
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044016,
+            "dur": 41,
+            "args": {
+                "name": "inference/softmax_linear/MatMul",
+                "op": "MatMul",
+                "input0": "inference/local3/inference/local3",
+                "input1": "inference/softmax_linear/weights/read/_175"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041878,
+            "id": 89
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044016,
+            "id": 89
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Add",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044061,
+            "dur": 36,
+            "args": {
+                "name": "inference/softmax_linear/inference/softmax_linear",
+                "op": "Add",
+                "input0": "inference/softmax_linear/MatMul",
+                "input1": "inference/softmax_linear/biases/read/_177"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/read",
+            "pid": 1,
+            "tid": 3,
+            "ts": 1505783360041901,
+            "id": 90
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/biases/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044061,
+            "id": 90
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044100,
+            "dur": 7,
+            "args": {
+                "name": "Reshape",
+                "op": "Reshape",
+                "input0": "inference/softmax_linear/inference/softmax_linear",
+                "input1": "concat"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "SoftmaxCrossEntropyWithLogits",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043980,
+            "dur": 389,
+            "args": {
+                "name": "cross_entropy_per_example_1",
+                "op": "SoftmaxCrossEntropyWithLogits",
+                "input0": "Reshape_3",
+                "input1": "Reshape_4"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Reshape_3",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360043977,
+            "id": 91
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Reshape_3",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043980,
+            "id": 91
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Reshape_4",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042859,
+            "id": 92
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Reshape_4",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043980,
+            "id": 92
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044375,
+            "dur": 12,
+            "args": {
+                "name": "Reshape_5",
+                "op": "Reshape",
+                "input0": "cross_entropy_per_example_1",
+                "input1": "Slice_5"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "cross_entropy_per_example_1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044369,
+            "id": 93
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "cross_entropy_per_example_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044375,
+            "id": 93
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mean",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044391,
+            "dur": 60,
+            "args": {
+                "name": "cross_entropy_1",
+                "op": "Mean",
+                "input0": "Reshape_5",
+                "input1": "Const_7"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "SoftmaxCrossEntropyWithLogits",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360044110,
+            "dur": 363,
+            "args": {
+                "name": "cross_entropy_per_example",
+                "op": "SoftmaxCrossEntropyWithLogits",
+                "input0": "Reshape",
+                "input1": "Reshape_1"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044107,
+            "id": 94
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360044110,
+            "id": 94
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "Reshape_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042920,
+            "id": 95
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "Reshape_1",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360044110,
+            "id": 95
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044478,
+            "dur": 7,
+            "args": {
+                "name": "Reshape_2",
+                "op": "Reshape",
+                "input0": "cross_entropy_per_example",
+                "input1": "Slice_2"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "cross_entropy_per_example",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360044473,
+            "id": 96
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "cross_entropy_per_example",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044478,
+            "id": 96
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044456,
+            "dur": 39,
+            "args": {
+                "name": "avg/AssignMovingAvg_1/sub_1",
+                "op": "Sub",
+                "input0": "cross_entropy_1/avg/read",
+                "input1": "cross_entropy_1"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "cross_entropy_1/avg/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042293,
+            "id": 97
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "cross_entropy_1/avg/read",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044456,
+            "id": 97
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "cross_entropy_1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044451,
+            "id": 98
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "cross_entropy_1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044456,
+            "id": 98
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mean",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044488,
+            "dur": 44,
+            "args": {
+                "name": "cross_entropy",
+                "op": "Mean",
+                "input0": "Reshape_2",
+                "input1": "Const_6"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044536,
+            "dur": 5,
+            "args": {
+                "name": "total_loss",
+                "op": "Identity",
+                "input0": "cross_entropy"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044499,
+            "dur": 49,
+            "args": {
+                "name": "avg/AssignMovingAvg_1/mul",
+                "op": "Mul",
+                "input0": "avg/AssignMovingAvg_1/sub_1",
+                "input1": "avg/AssignMovingAvg_1/sub"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AddN",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044545,
+            "dur": 33,
+            "args": {
+                "name": "total_loss_1",
+                "op": "AddN",
+                "input0": "cross_entropy",
+                "input1": "cross_entropy_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044552,
+            "dur": 49,
+            "args": {
+                "name": "avg/AssignMovingAvg_1",
+                "op": "AssignSub",
+                "input0": "cross_entropy_1/avg",
+                "input1": "avg/AssignMovingAvg_1/mul"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "cross_entropy_1/avg",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360042178,
+            "id": 99
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "cross_entropy_1/avg",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360044552,
+            "id": 99
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044582,
+            "dur": 32,
+            "args": {
+                "name": "avg/AssignMovingAvg/sub_1",
+                "op": "Sub",
+                "input0": "cross_entropy/avg/read",
+                "input1": "cross_entropy"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sub",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044697,
+            "dur": 38,
+            "args": {
+                "name": "avg/AssignMovingAvg_2/sub_1",
+                "op": "Sub",
+                "input0": "total_loss/avg/read",
+                "input1": "total_loss"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044804,
+            "dur": 35,
+            "args": {
+                "name": "avg/AssignMovingAvg/mul",
+                "op": "Mul",
+                "input0": "avg/AssignMovingAvg/sub_1",
+                "input1": "avg/AssignMovingAvg/sub"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044842,
+            "dur": 25,
+            "args": {
+                "name": "avg/AssignMovingAvg_2/mul",
+                "op": "Mul",
+                "input0": "avg/AssignMovingAvg_2/sub_1",
+                "input1": "avg/AssignMovingAvg_2/sub"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044870,
+            "dur": 27,
+            "args": {
+                "name": "avg/AssignMovingAvg",
+                "op": "AssignSub",
+                "input0": "cross_entropy/avg",
+                "input1": "avg/AssignMovingAvg/mul"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "AssignSub",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044900,
+            "dur": 24,
+            "args": {
+                "name": "avg/AssignMovingAvg_2",
+                "op": "AssignSub",
+                "input0": "total_loss/avg",
+                "input1": "avg/AssignMovingAvg_2/mul"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044927,
+            "dur": 5,
+            "args": {
+                "name": "avg",
+                "op": "NoOp",
+                "input0": "^avg/AssignMovingAvg",
+                "input1": "^avg/AssignMovingAvg_1",
+                "input2": "^avg/AssignMovingAvg_2"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044936,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/BroadcastGradientArgs/_9__cf__30",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044943,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/BroadcastGradientArgs/_10__cf__31",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044950,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/BroadcastGradientArgs/_12__cf__33",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044956,
+            "dur": 4,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Tile/_13__cf__34",
+                "op": "Const"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044962,
+            "dur": 4,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Shape",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044968,
+            "dur": 4,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Shape_1",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044974,
+            "dur": 4,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Const",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044979,
+            "dur": 4,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Const_1",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044985,
+            "dur": 3,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Maximum/y",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044990,
+            "dur": 4,
+            "args": {
+                "name": "gradients/Reshape_2_grad/Shape",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044996,
+            "dur": 4,
+            "args": {
+                "name": "gradients/cross_entropy_per_example_grad/ExpandDims/dim",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045002,
+            "dur": 4,
+            "args": {
+                "name": "gradients/Reshape_grad/Shape",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045007,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Shape_1",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045013,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/Shape",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045019,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/Shape_1",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045025,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/Reshape_grad/Shape",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045030,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/conv1/Conv2D_grad/Shape",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045036,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/conv1/Conv2D_grad/Shape_1",
+                "op": "Const",
+                "input0": "^avg"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Prod",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045113,
+            "dur": 45,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Prod_1",
+                "op": "Prod",
+                "input0": "gradients/cross_entropy_grad/Shape_1/_183",
+                "input1": "gradients/cross_entropy_grad/Const_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Prod",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360045146,
+            "dur": 22,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Prod",
+                "op": "Prod",
+                "input0": "gradients/cross_entropy_grad/Shape/_187",
+                "input1": "gradients/cross_entropy_grad/Const"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/cross_entropy_grad/Shape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044966,
+            "id": 100
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/cross_entropy_grad/Shape",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360045146,
+            "id": 100
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/cross_entropy_grad/Const",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360044978,
+            "id": 101
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/cross_entropy_grad/Const",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360045146,
+            "id": 101
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Maximum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045235,
+            "dur": 12,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Maximum",
+                "op": "Maximum",
+                "input0": "gradients/cross_entropy_grad/Prod_1/_185",
+                "input1": "gradients/cross_entropy_grad/Maximum/y"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "FloorDiv",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045289,
+            "dur": 16,
+            "args": {
+                "name": "gradients/cross_entropy_grad/floordiv",
+                "op": "FloorDiv",
+                "input0": "gradients/cross_entropy_grad/Prod/_189",
+                "input1": "gradients/cross_entropy_grad/Maximum"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "gradients/cross_entropy_grad/Prod",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360045168,
+            "id": 102
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "gradients/cross_entropy_grad/Prod",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045289,
+            "id": 102
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Cast",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045382,
+            "dur": 62,
+            "args": {
+                "name": "gradients/cross_entropy_grad/Cast",
+                "op": "Cast",
+                "input0": "gradients/cross_entropy_grad/floordiv/_191"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "RealDiv",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045448,
+            "dur": 42,
+            "args": {
+                "name": "gradients/cross_entropy_grad/truediv",
+                "op": "RealDiv",
+                "input0": "gradients/cross_entropy_grad/Tile",
+                "input1": "gradients/cross_entropy_grad/Cast"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045493,
+            "dur": 6,
+            "args": {
+                "name": "gradients/Reshape_2_grad/Reshape",
+                "op": "Reshape",
+                "input0": "gradients/cross_entropy_grad/truediv",
+                "input1": "gradients/Reshape_2_grad/Shape"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ExpandDims",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045501,
+            "dur": 8,
+            "args": {
+                "name": "gradients/cross_entropy_per_example_grad/ExpandDims",
+                "op": "ExpandDims",
+                "input0": "gradients/Reshape_2_grad/Reshape",
+                "input1": "gradients/cross_entropy_per_example_grad/ExpandDims/dim"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Mul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045511,
+            "dur": 38,
+            "args": {
+                "name": "gradients/cross_entropy_per_example_grad/mul",
+                "op": "Mul",
+                "input0": "gradients/cross_entropy_per_example_grad/ExpandDims",
+                "input1": "cross_entropy_per_example:1"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "cross_entropy_per_example:1",
+            "pid": 3,
+            "tid": 2,
+            "ts": 1505783360044473,
+            "id": 103
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "cross_entropy_per_example:1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045511,
+            "id": 103
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045553,
+            "dur": 6,
+            "args": {
+                "name": "gradients/Reshape_grad/Reshape",
+                "op": "Reshape",
+                "input0": "gradients/cross_entropy_per_example_grad/mul",
+                "input1": "gradients/Reshape_grad/Shape"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045561,
+            "dur": 7,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Sum",
+                "op": "Sum",
+                "input0": "gradients/Reshape_grad/Reshape",
+                "input1": "gradients/inference/softmax_linear/inference/softmax_linear_grad/BroadcastGradientArgs"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045571,
+            "dur": 41,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Sum_1",
+                "op": "Sum",
+                "input0": "gradients/Reshape_grad/Reshape",
+                "input1": "gradients/inference/softmax_linear/inference/softmax_linear_grad/BroadcastGradientArgs:1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045616,
+            "dur": 6,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Reshape",
+                "op": "Reshape",
+                "input0": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Sum",
+                "input1": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Shape"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045625,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Reshape_1",
+                "op": "Reshape",
+                "input0": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Sum_1",
+                "input1": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Shape_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045633,
+            "dur": 3,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/group_deps",
+                "op": "NoOp",
+                "input0": "^avg",
+                "input1": "^gradients/inference/softmax_linear/inference/softmax_linear_grad/Reshape",
+                "input2": "^gradients/inference/softmax_linear/inference/softmax_linear_grad/Reshape_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045640,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency",
+                "op": "Identity",
+                "input0": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Reshape",
+                "input1": "^gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045648,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency_1",
+                "op": "Identity",
+                "input0": "gradients/inference/softmax_linear/inference/softmax_linear_grad/Reshape_1",
+                "input1": "^gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045656,
+            "dur": 51,
+            "args": {
+                "name": "gradients/inference/softmax_linear/MatMul_grad/MatMul",
+                "op": "MatMul",
+                "input0": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency",
+                "input1": "inference/softmax_linear/weights/read/_175"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041878,
+            "id": 104
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/softmax_linear/weights/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045656,
+            "id": 104
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045713,
+            "dur": 40,
+            "args": {
+                "name": "gradients/inference/softmax_linear/MatMul_grad/MatMul_1",
+                "op": "MatMul",
+                "input0": "inference/local3/inference/local3",
+                "input1": "gradients/inference/softmax_linear/inference/softmax_linear_grad/tuple/control_dependency"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045836,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/softmax_linear/MatMul_grad/tuple/group_deps",
+                "op": "NoOp",
+                "input0": "^avg",
+                "input1": "^gradients/inference/softmax_linear/MatMul_grad/MatMul",
+                "input2": "^gradients/inference/softmax_linear/MatMul_grad/MatMul_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045844,
+            "dur": 8,
+            "args": {
+                "name": "gradients/inference/softmax_linear/MatMul_grad/tuple/control_dependency",
+                "op": "Identity",
+                "input0": "gradients/inference/softmax_linear/MatMul_grad/MatMul",
+                "input1": "^gradients/inference/softmax_linear/MatMul_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045855,
+            "dur": 6,
+            "args": {
+                "name": "gradients/inference/softmax_linear/MatMul_grad/tuple/control_dependency_1",
+                "op": "Identity",
+                "input0": "gradients/inference/softmax_linear/MatMul_grad/MatMul_1",
+                "input1": "^gradients/inference/softmax_linear/MatMul_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ReluGrad",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045864,
+            "dur": 43,
+            "args": {
+                "name": "gradients/inference/local3/inference/local3_grad/ReluGrad",
+                "op": "ReluGrad",
+                "input0": "gradients/inference/softmax_linear/MatMul_grad/tuple/control_dependency",
+                "input1": "inference/local3/inference/local3"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045981,
+            "dur": 9,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/Sum",
+                "op": "Sum",
+                "input0": "gradients/inference/local3/inference/local3_grad/ReluGrad",
+                "input1": "gradients/inference/local3/add_grad/BroadcastGradientArgs"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Sum",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360045994,
+            "dur": 63,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/Sum_1",
+                "op": "Sum",
+                "input0": "gradients/inference/local3/inference/local3_grad/ReluGrad",
+                "input1": "gradients/inference/local3/add_grad/BroadcastGradientArgs:1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046061,
+            "dur": 7,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/Reshape",
+                "op": "Reshape",
+                "input0": "gradients/inference/local3/add_grad/Sum",
+                "input1": "gradients/inference/local3/add_grad/Shape"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046071,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/Reshape_1",
+                "op": "Reshape",
+                "input0": "gradients/inference/local3/add_grad/Sum_1",
+                "input1": "gradients/inference/local3/add_grad/Shape_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046078,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/tuple/group_deps",
+                "op": "NoOp",
+                "input0": "^avg",
+                "input1": "^gradients/inference/local3/add_grad/Reshape",
+                "input2": "^gradients/inference/local3/add_grad/Reshape_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046085,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/tuple/control_dependency",
+                "op": "Identity",
+                "input0": "gradients/inference/local3/add_grad/Reshape",
+                "input1": "^gradients/inference/local3/add_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046093,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/local3/add_grad/tuple/control_dependency_1",
+                "op": "Identity",
+                "input0": "gradients/inference/local3/add_grad/Reshape_1",
+                "input1": "^gradients/inference/local3/add_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046100,
+            "dur": 49,
+            "args": {
+                "name": "gradients/inference/local3/MatMul_grad/MatMul",
+                "op": "MatMul",
+                "input0": "gradients/inference/local3/add_grad/tuple/control_dependency",
+                "input1": "inference/local3/weights/read/_171"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 1,
+            "tid": 2,
+            "ts": 1505783360041924,
+            "id": 105
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/local3/weights/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046100,
+            "id": 105
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MatMul",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046153,
+            "dur": 40,
+            "args": {
+                "name": "gradients/inference/local3/MatMul_grad/MatMul_1",
+                "op": "MatMul",
+                "input0": "inference/local3/Reshape",
+                "input1": "gradients/inference/local3/add_grad/tuple/control_dependency"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046269,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/MatMul_grad/tuple/group_deps",
+                "op": "NoOp",
+                "input0": "^avg",
+                "input1": "^gradients/inference/local3/MatMul_grad/MatMul",
+                "input2": "^gradients/inference/local3/MatMul_grad/MatMul_1"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046278,
+            "dur": 6,
+            "args": {
+                "name": "gradients/inference/local3/MatMul_grad/tuple/control_dependency",
+                "op": "Identity",
+                "input0": "gradients/inference/local3/MatMul_grad/MatMul",
+                "input1": "^gradients/inference/local3/MatMul_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046288,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/local3/MatMul_grad/tuple/control_dependency_1",
+                "op": "Identity",
+                "input0": "gradients/inference/local3/MatMul_grad/MatMul_1",
+                "input1": "^gradients/inference/local3/MatMul_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Reshape",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046295,
+            "dur": 6,
+            "args": {
+                "name": "gradients/inference/local3/Reshape_grad/Reshape",
+                "op": "Reshape",
+                "input0": "gradients/inference/local3/MatMul_grad/tuple/control_dependency",
+                "input1": "gradients/inference/local3/Reshape_grad/Shape"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "MaxPoolGrad",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046367,
+            "dur": 187,
+            "args": {
+                "name": "gradients/inference/pool1_grad/MaxPoolGrad",
+                "op": "MaxPoolGrad",
+                "input0": "inference/conv1/inference/conv1",
+                "input1": "inference/pool1",
+                "input2": "gradients/inference/local3/Reshape_grad/Reshape"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/inference/conv1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043821,
+            "id": 106
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/inference/conv1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046367,
+            "id": 106
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/pool1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043875,
+            "id": 107
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/pool1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046367,
+            "id": 107
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "ReluGrad",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046567,
+            "dur": 40,
+            "args": {
+                "name": "gradients/inference/conv1/inference/conv1_grad/ReluGrad",
+                "op": "ReluGrad",
+                "input0": "gradients/inference/pool1_grad/MaxPoolGrad",
+                "input1": "inference/conv1/inference/conv1"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/inference/conv1",
+            "pid": 3,
+            "tid": 1,
+            "ts": 1505783360043821,
+            "id": 108
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/inference/conv1",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046567,
+            "id": 108
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "BiasAddGrad",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046611,
+            "dur": 51,
+            "args": {
+                "name": "gradients/inference/conv1/BiasAdd_grad/BiasAddGrad",
+                "op": "BiasAddGrad",
+                "input0": "gradients/inference/conv1/inference/conv1_grad/ReluGrad"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046665,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/conv1/BiasAdd_grad/tuple/group_deps",
+                "op": "NoOp",
+                "input0": "^avg",
+                "input1": "^gradients/inference/conv1/inference/conv1_grad/ReluGrad",
+                "input2": "^gradients/inference/conv1/BiasAdd_grad/BiasAddGrad"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046673,
+            "dur": 7,
+            "args": {
+                "name": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency",
+                "op": "Identity",
+                "input0": "gradients/inference/conv1/inference/conv1_grad/ReluGrad",
+                "input1": "^gradients/inference/conv1/BiasAdd_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046683,
+            "dur": 5,
+            "args": {
+                "name": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency_1",
+                "op": "Identity",
+                "input0": "gradients/inference/conv1/BiasAdd_grad/BiasAddGrad",
+                "input1": "^gradients/inference/conv1/BiasAdd_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Conv2DBackpropInput",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046691,
+            "dur": 227,
+            "args": {
+                "name": "gradients/inference/conv1/Conv2D_grad/Conv2DBackpropInput",
+                "op": "Conv2DBackpropInput",
+                "input0": "gradients/inference/conv1/Conv2D_grad/Shape",
+                "input1": "inference/conv1/weights/read/_167",
+                "input2": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 1,
+            "tid": 1,
+            "ts": 1505783360041845,
+            "id": 109
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "inference/conv1/weights/read",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046691,
+            "id": 109
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Conv2DBackpropFilter",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360046930,
+            "dur": 183,
+            "args": {
+                "name": "gradients/inference/conv1/Conv2D_grad/Conv2DBackpropFilter",
+                "op": "Conv2DBackpropFilter",
+                "input0": "reshaped_input_signal/_181",
+                "input1": "gradients/inference/conv1/Conv2D_grad/Shape_1",
+                "input2": "gradients/inference/conv1/BiasAdd_grad/tuple/control_dependency"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360047204,
+            "dur": 4,
+            "args": {
+                "name": "gradients/inference/conv1/Conv2D_grad/tuple/group_deps",
+                "op": "NoOp",
+                "input0": "^avg",
+                "input1": "^gradients/inference/conv1/Conv2D_grad/Conv2DBackpropInput",
+                "input2": "^gradients/inference/conv1/Conv2D_grad/Conv2DBackpropFilter"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360047212,
+            "dur": 8,
+            "args": {
+                "name": "gradients/inference/conv1/Conv2D_grad/tuple/control_dependency_1",
+                "op": "Identity",
+                "input0": "gradients/inference/conv1/Conv2D_grad/Conv2DBackpropFilter",
+                "input1": "^gradients/inference/conv1/Conv2D_grad/tuple/group_deps"
+            }
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "Identity",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360047395,
+            "dur": 9,
+            "args": {
+                "name": "GradientDescent/_213",
+                "op": "Identity",
+                "input0": "GradientDescent/_212"
+            }
+        },
+        {
+            "ph": "s",
+            "cat": "DataFlow",
+            "name": "GradientDescent",
+            "pid": 1,
+            "tid": 0,
+            "ts": 1505783360047323,
+            "id": 110
+        },
+        {
+            "ph": "t",
+            "cat": "DataFlow",
+            "name": "GradientDescent",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360047395,
+            "id": 110
+        },
+        {
+            "ph": "X",
+            "cat": "Op",
+            "name": "NoOp",
+            "pid": 3,
+            "tid": 0,
+            "ts": 1505783360047408,
+            "dur": 7,
+            "args": {
+                "name": "train",
+                "op": "NoOp",
+                "input0": "^GradientDescent/_213",
+                "input1": "^ExponentialMovingAverage/_217"
+            }
+        }
+    ]
+}

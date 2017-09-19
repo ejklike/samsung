@@ -121,7 +121,8 @@ def evaluate(train=False):
 
     # Build a Graph that computes the logits predictions from the
     # inference model.
-    logits = my_graph.inference(signals)
+    with tf.variable_scope('inference') as scope:
+      logits = my_graph.inference(signals)
 
     # Restore the moving average version of the learned variables for eval.
     variable_averages = tf.train.ExponentialMovingAverage(

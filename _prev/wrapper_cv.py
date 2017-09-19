@@ -78,6 +78,16 @@ class Model(object):
             per_process_gpu_memory_fraction=FLAGS.gpu_usage)
         sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
+        # self._x = tf.constant(X_trn)
+        # self._y = tf.constant(y_trn)
+
+        # self._y_val = tf.constant()
+
+        # X_trn_initializer = tf.placeholder(dtype=X_trn.dtype, shape=X_trn.shape)
+        # y_trn_initializer = tf.placeholder(dtype=y_trn.dtype, shape=y_trn.shape)
+        # input_X_trn = tf.Variable(X_trn_initializer, trainable=False, collections=[])
+        # input_y_trn = tf.Variable(y_trn_initializer, trainable=False, collections=[])
+
         # Define optimizer
         optimizer = tf.train.AdamOptimizer(
             learning_rate=FLAGS.learning_rate).minimize(cost)
@@ -89,8 +99,9 @@ class Model(object):
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        # batch_generator = BatchGenerator(X_train, y_train, FLAGS)
-        # batch_gen = batch_generator(X_train, y_train, FLAGS)
+        # sess.run(input_X_trn.initializer, feed_dict={X_trn_initializer: X_trn})
+        # sess.run(input_y_trn.initializer, feed_dict={y_trn_initializer: y_trn})
+
         def select_data(what):
             data_set = dict(
                 trn={_x: X_trn, _y: y_trn, _keeprate: FLAGS.keeprate},

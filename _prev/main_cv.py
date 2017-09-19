@@ -1,11 +1,6 @@
 import argparse
 from datetime import datetime
 import time
-import logging
-logging.basicConfig(
-    filename='./log/train-{}.log'.format(datetime.now().strftime("%y%m%d-%H%M%S")),
-    filemode='w',
-    level=logging.INFO)
 
 # do not print warning logs
 # https://stackoverflow.com/questions/35911252
@@ -93,8 +88,6 @@ def main(__):
     step_info_msg = step_info_msg.format(FLAGS.recipe_no, FLAGS.step_no, FLAGS.device_id)
     print(step_info_msg)
     print(FLAGS.sensor_list)
-    if FLAGS.enable_logging is True:
-        logging.info(step_info_msg)
         
     best_param_list = []
     best_score_list = []
@@ -111,8 +104,6 @@ def main(__):
         for model_no, param_dict in enumerate(ParameterGrid(FLAGS.param_grid)):
             msg = 'model# {} {}'.format(model_no, param_dict)
             print(msg)
-            if FLAGS.enable_logging is True:
-                logging.info(msg)
 
             FLAGS.model_desc = ''
             for k, v in param_dict.items():
@@ -167,14 +158,6 @@ def main(__):
 
 
                 del model
-
-                # logging
-                if FLAGS.enable_logging is True:
-                    msg = '(loss, prec, rec, f1) = ({:.3f}, {:.3f}, {:.3f}, {:.3f})'
-                    logging.info('  cv# {} until iter {}'.format(cv_no, model.best_i))
-                    logging.info('    - trn ' + msg.format(*trn_metrics))
-                    logging.info('    - val ' + msg.format(*val_metrics))
-                    logging.info('    - tst ' + msg.format(*tst_metrics))
             
             # message = '  ->> average{:.3f}'
             # check best_model
@@ -193,10 +176,6 @@ def main(__):
         best_param_list.append(best_param)
         elapsed_time_list.append(elapsed_time)
 
-        if FLAGS.enable_logging is True:
-            logging.info(step_info_msg)
-            logging.info(msg)
-    
     zipped_list = zip(range(FLAGS.num_repeat), best_score_list, best_param_list, elapsed_time_list)
     for i, score, param, elapsed_time in zipped_list:
         print('#{:02}: {:3f} @ {}, time={:.1f}'.format(i, score, param, elapsed_time))
@@ -231,8 +210,7 @@ if __name__ == '__main__':
     FLAGS, unparsed = parser.parse_known_args()
 
     # Assume that you have 12GB of GPU memory and want to allocate ~4GB: 0.333
-    FLAGS.gpu_usage = 0.27
-    FLAGS.enable_logging = False
+    FLAGS.gpu_usage = 0.90
 
     # file
     # FLAGS.file_name = './data_by_pm_var0.5.p'
