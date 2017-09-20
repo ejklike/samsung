@@ -86,31 +86,45 @@ def _variable_with_group_weight_decay(name, shape, wd=None, reg_type='l1'):
   
   if wd is not None:
     window_size, sensor_size, _, n_filter = shape
-    squeezed_var = tf.squeeze(var) # remove channel
+    with tf.device('/cpu:0'):
+      squeezed_var = tf.squeeze(var) # remove channel
 
     if reg_type == 'group1':
-      kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
-      column_list = [tf.unstack(value=k, num=sensor_size, axis=1) for k in kernel_list]
-      weights_list = [col for col_list in kernel_list for col in col_list] # flatten
-      group_wd = tf.sqrt(tf.constant(window_size, dtype=dtype))
-
-    elif reg_type == 'group2':
-      kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
-      unified_kernel = tf.concat(kernel_list, axis=0)
-      weights_list = tf.unstack(value=unified_kernel, num=sensor_size, axis=1)
-      group_wd = tf.sqrt(tf.constant(window_size * n_filter, dtype=dtype))
-
-    elif reg_type == 'l1':
-      weights_list = [var]
+      # group_wd = tf.sqrt(tf.constant(window_size, dtype=dtype))
       group_wd = tf.constant(1.0, dtype=dtype)
       
-    regularizer = tf.contrib.layers.l1_regularizer(wd * group_wd)
-    weight_regularization = tf.contrib.layers.apply_regularization(
-      regularizer, weights_list=weights_list)
-    tf.add_to_collection('losses', weight_regularization)
+      with tf.device('/cpu:0'):
+        kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
+        kernel_list = [tf.sqrt(tf.reduce_sum(k**2, axis=0)) for k in kernel_list]
+        
+        kernel_list = [group_wd * tf.reduce_sum(k) for k in kernel_list]
+      weight_regularization = tf.reduce_sum(kernel_list) # sum by filter
+      tf.add_to_collection('losses', weight_regularization)
+
+    elif reg_type == 'group2':
+      # group_wd = tf.sqrt(tf.constant(window_size * n_filter, dtype=dtype))
+      group_wd = tf.constant(1.0, dtype=dtype)
+
+      with tf.device('/cpu:0'):
+        kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
+        unified_kernel = tf.concat(kernel_list, axis=0)
+      l2_norm_list = tf.sqrt(tf.reduce_sum(unified_kernel**2, axis=0))
+      weight_regularization = group_wd * tf.reduce_sum(l2_norm_list)
+
+      tf.add_to_collection('losses', weight_regularization)
+
+    elif reg_type == 'l1':
+      group_wd = tf.constant(1.0, dtype=dtype)
+      regularizer = tf.contrib.layers.l1_regularizer(wd * group_wd)
+      with tf.device('/cpu:0'):
+        weights_list = [var]
+      
+      weight_regularization = tf.contrib.layers.apply_regularization(
+        regularizer, weights_list=weights_list)
+      tf.add_to_collection('losses', weight_regularization)
   return var
 
-def inputs(data_fname, train=True):
+def inputs(data_fname, train=True, val=True):
   """Construct input for CIFAR evaluation using the Reader ops.
 
   Args:
@@ -165,15 +179,21 @@ def inputs(data_fname, train=True):
 
     signals_trn, labels_trn = oversample(signals_trn, labels_trn, N_OVERSAMPLE)
 
-    signals_trn, signals_val, labels_trn, labels_val = train_test_split(
-      signals_trn, labels_trn, test_size=TEST_SIZE, random_state=RANDOM_STATE, 
-      stratify=labels_trn[:, 1])
+    if val:
+      signals_trn, signals_val, labels_trn, labels_val = train_test_split(
+        signals_trn, labels_trn, test_size=TEST_SIZE, random_state=RANDOM_STATE, 
+        stratify=labels_trn[:, 1])
 
-    FLAGS.batch_size = signals_trn.shape[0]
+      FLAGS.batch_size = signals_trn.shape[0]
+      
+      input_signals_trn, input_labels_trn = tf_constant(signals_trn, labels_trn)
+      input_signals_val, input_labels_val = tf_constant(signals_val, labels_val)
+      return input_signals_trn, input_labels_trn, input_signals_val, input_labels_val
     
-    input_signals_trn, input_labels_trn = tf_constant(signals_trn, labels_trn)
-    input_signals_val, input_labels_val = tf_constant(signals_val, labels_val)
-    return input_signals_trn, input_labels_trn, input_signals_val, input_labels_val
+    else:
+      FLAGS.batch_size = signals_trn.shape[0]
+      input_signals_trn, input_labels_trn = tf_constant(signals_trn, labels_trn)
+      return input_signals_trn, input_labels_trn
     
   else:
     signals_tst, labels_tst = tf_constant(signals_tst, labels_tst)
@@ -199,9 +219,6 @@ def inference(signals, wd=None, reg_type=None):
   pooling_size = 2
   pooling_stride = 2
   padding = 'VALID'
-  
-  wd = 0.01
-  reg_type = 'group2'
 
   # We instantiate all variables using tf.get_variable() instead of
   # tf.Variable() in order to share variables across multiple GPU training runs.

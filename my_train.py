@@ -13,13 +13,12 @@ FLAGS = tf.app.flags.FLAGS
 
 def save_results(iter, loss, acc, prec, rec, f1):
   # record file existence check
-  record_fname = 'record.csv'
-  if not os.path.exists(record_fname):
-    with open(record_fname, 'w') as fout:
+  if not os.path.exists(FLAGS.record_fname):
+    with open(FLAGS.record_fname, 'w') as fout:
       fout.write('datetime,data_fname,reg_type,wd,iter,loss,acc,prec,rec,f1')
       fout.write('\n')
 
-  with open(record_fname, 'a') as fout:
+  with open(FLAGS.record_fname, 'a') as fout:
     fout.write('{},'.format(FLAGS.timestamp))
     fout.write('{},{},{},'.format(FLAGS.data_fname, FLAGS.reg_type, FLAGS.wd))
     fout.write('{},{},{},{},{},{},'.format(iter, loss, acc, prec, rec, f1))
@@ -206,7 +205,7 @@ if __name__ == '__main__':
 
   parser.add_argument('--gpu_no', type=int, default=0,
                       help='gpu device number')
-  parser.add_argument('--gpu_usage', type=float, default=0.9,
+  parser.add_argument('--gpu_usage', type=float, default=0.45,
                       help='gpu usage')
   parser.add_argument('--model', type=int, default=0,
                       help='0/1/2/3')
@@ -217,6 +216,8 @@ if __name__ == '__main__':
 
   # Input filename
   FLAGS.data_fname = './{}-{}-PM{}.p'.format(
+    args.recipe_no, args.step_no, args.device_id)
+  FLAGS.record_fname = './{}-{}-PM{}.csv'.format(
     args.recipe_no, args.step_no, args.device_id)
   # Model Type
   FLAGS.reg_type = {
@@ -234,7 +235,7 @@ if __name__ == '__main__':
   FLAGS.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
   FLAGS.train_dir = './tf_logs/train_{}_{}'.format(FLAGS.reg_type, FLAGS.timestamp)
   # Number of batches to run.
-  FLAGS.max_steps = 3000
+  FLAGS.max_steps = 2000
   # Whether to log device placement.
   FLAGS.log_device_placement = False
   # How often to log results to the console.

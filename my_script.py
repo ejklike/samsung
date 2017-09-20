@@ -5,12 +5,10 @@ from multiprocessing import Process, Pool
 num_iteration = 10
 
 sh = (
-  'python my_train.py {} {} {} '
+  'python my_train_no_val.py {} {} {} '
   '--gpu_no={} --gpu_usage={} '
   '--model={} --wd={}'
 )
-
-model_list = [0, 1, 2, 3]
 
 if __name__ == '__main__':
   # parse input parameters
@@ -39,7 +37,7 @@ if __name__ == '__main__':
       os.system(this_sh)
 
   else:
-    wd_list = [0.01, 0.05, 0.1, 1]
+    wd_list = [0.01, 0.05, 0.1]#, 1]
     for wd in wd_list:
       this_sh = sh.format(
         args.recipe_no, args.step_no, args.device_id, gpu_no, gpu_usage, args.model, wd)
