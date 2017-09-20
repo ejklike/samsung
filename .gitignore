@@ -6,4 +6,4 @@ log
 data
 trash
 *.p
-record.csv
+*.csv
