@@ -11,24 +11,20 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_boolean('use_fp16', False,
                             """Train the model using fp16.""")
-tf.app.flags.DEFINE_float('test_ratio', 0.2,
-                            """test size""")
-tf.app.flags.DEFINE_float('random_state', 42,
-                            """random_state""")
 
 # If a model is trained with multiple GPUs, prefix all Op names with tower_name
 # to differentiate the operations. Note that this prefix is removed from the
 # names of the summaries when visualizing a model.
 TOWER_NAME = 'tower'
 
-# Variables that affect learning rate.
-DECAY_STEPS = 3000
-INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
-LEARNING_RATE_DECAY_FACTOR = 0.01  # Learning rate decay factor.
-
 # Constants describing the training process.
+INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
 MOVING_AVERAGE_DECAY = 0.9999     # The decay to use for the moving average.
 
+# Constants for input data manipulation
+N_OVERSAMPLE = 10
+TEST_SIZE = 0.2
+RANDOM_STATE = 42
 
 def _activation_summary(x):
   """Helper to create summaries for activations.
@@ -66,7 +62,7 @@ def _variable_on_cpu(name, shape, initializer):
   return var
 
 
-def _variable_with_group_weight_decay(name, shape, stddev, wd=None, reg_type='l1'):
+def _variable_with_group_weight_decay(name, shape, wd=None, reg_type='l1'):
   """Helper to create an initialized Variable with weight decay.
 
   Note that the Variable is initialized with a truncated normal distribution.
@@ -87,7 +83,6 @@ def _variable_with_group_weight_decay(name, shape, stddev, wd=None, reg_type='l1
       name,
       shape,
       tf.contrib.layers.xavier_initializer(dtype=dtype))
-      # tf.truncated_normal_initializer(stddev=stddev, dtype=dtype))
   
   if wd is not None:
     window_size, sensor_size, _, n_filter = shape
@@ -95,22 +90,24 @@ def _variable_with_group_weight_decay(name, shape, stddev, wd=None, reg_type='l1
 
     if reg_type == 'group1':
       kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
-      kernel_list = [tf.sqrt(tf.reduce_sum(k**2, axis=0)) for k in kernel_list]
-      l2_norm_list = [tf.reduce_sum(k) for k in kernel_list]
-
-      sqrt_coefficient = tf.sqrt(tf.constant(window_size, dtype=dtype))
-      group_loss = tf.reduce_sum(sqrt_coefficient * l2_norm_list)
+      column_list = [tf.unstack(value=k, num=sensor_size, axis=1) for k in kernel_list]
+      weights_list = [col for col_list in kernel_list for col in col_list] # flatten
+      group_wd = tf.sqrt(tf.constant(window_size, dtype=dtype))
 
     elif reg_type == 'group2':
       kernel_list = tf.unstack(value=squeezed_var, num=n_filter, axis=2)
-      unified_kernel = tf.stack(kernel_list, axis=0)
-      group_norm_list = tf.sqrt(tf.reduce_sum(unified_kernel**2, axis=0))
+      unified_kernel = tf.concat(kernel_list, axis=0)
+      weights_list = tf.unstack(value=unified_kernel, num=sensor_size, axis=1)
+      group_wd = tf.sqrt(tf.constant(window_size * n_filter, dtype=dtype))
 
-      sqrt_coefficient = tf.sqrt(tf.constant(window_size * n_filter, dtype=dtype))
-      group_loss = tf.reduce_sum(sqrt_coefficient * group_norm_list)
-
-    weight_decay = tf.multiply(group_loss, wd, name='weight_group_loss')
-    tf.add_to_collection('losses', weight_decay)
+    elif reg_type == 'l1':
+      weights_list = [var]
+      group_wd = tf.constant(1.0, dtype=dtype)
+      
+    regularizer = tf.contrib.layers.l1_regularizer(wd * group_wd)
+    weight_regularization = tf.contrib.layers.apply_regularization(
+      regularizer, weights_list=weights_list)
+    tf.add_to_collection('losses', weight_regularization)
   return var
 
 def inputs(data_fname, train=True):
@@ -120,7 +117,7 @@ def inputs(data_fname, train=True):
     eval_data: bool, indicating if one should use the train or eval data set.
 
   Returns:
-    images: Images. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.
+    signals: Signals. 4D tensor of [batch_size, TIME_SIZE, SENSOR_SIZE, 1] size.
     labels: Labels. 1D tensor of [batch_size] size.
 
   Raises:
@@ -136,18 +133,12 @@ def inputs(data_fname, train=True):
   raw_data = pickle.load(open(data_fname, 'rb'))
   signals, labels = raw_data['signals'], raw_data['labels']
 
-  print(signals.shape)
-
   # signals = signals.reshape(signals.shape[0], -1)
 
   # split into trn and tst
   signals_trn, signals_tst, labels_trn, labels_tst = train_test_split(
-    signals, labels, test_size=FLAGS.test_ratio, random_state=FLAGS.random_state, 
+    signals, labels, test_size=TEST_SIZE, random_state=RANDOM_STATE, 
     stratify=labels[:, 1])
-
-  print(labels.sum(axis=0), labels_trn.sum(axis=0), labels_tst.sum(axis=0))
-  
-  # print(signals_trn.shape, signals_tst.shape)
   
   def tf_constant(signals, labels):
     input_signals, input_labels = tf.constant(signals), tf.constant(labels)
@@ -172,18 +163,11 @@ def inputs(data_fname, train=True):
         y = np.concatenate((y, y_fault), axis=0)
       return X, y
 
-    print(signals_trn.shape, labels_trn.shape)
-
-    signals_trn, labels_trn = oversample(signals_trn, labels_trn, 10)
-
-    print(signals_trn.shape, labels_trn.shape)
+    signals_trn, labels_trn = oversample(signals_trn, labels_trn, N_OVERSAMPLE)
 
     signals_trn, signals_val, labels_trn, labels_val = train_test_split(
-      signals_trn, labels_trn, test_size=FLAGS.test_ratio, random_state=FLAGS.random_state, 
+      signals_trn, labels_trn, test_size=TEST_SIZE, random_state=RANDOM_STATE, 
       stratify=labels_trn[:, 1])
-    
-    print(signals_trn.shape, labels_trn.shape)
-    print(signals_val.shape, labels_val.shape)
 
     FLAGS.batch_size = signals_trn.shape[0]
     
@@ -196,18 +180,11 @@ def inputs(data_fname, train=True):
     return signals_tst, labels_tst
 
 
-def inference_nn(signals):
-  hidden = tf.contrib.layers.fully_connected(signals, 100, scope='hidden_node1')
-  # hidden = tf.contrib.layers.fully_connected(hidden, 50, scope='hidden_node2')
-  # hidden = tf.contrib.layers.fully_connected(hidden, 100, scope='hidden_node3')
-  return tf.contrib.layers.linear(hidden, 2, scope='final_node')
-  # return tf.contrib.layers.linear(hidden, 2, scope='final_node', activation_fn=tf.nn.softmax)
-
-def inference_b(signals):
-  """Build the CIFAR-10 model.
+def inference(signals, wd=None, reg_type=None):
+  """Build the model.
 
   Args:
-    images: Images returned from distorted_inputs() or inputs().
+    signals: Signals returned from inputs().
 
   Returns:
     Logits.
@@ -215,71 +192,12 @@ def inference_b(signals):
 
   batch_size, time_size, sensor_size, _ = signals.get_shape().as_list()
 
-  window_size = 5
+  window_size = 7
+  n_filter = 20
+  n_hidden = 50
+  
   pooling_size = 2
   pooling_stride = 2
-  n_filter = 10
-  n_hidden_list = [30]
-  padding = 'VALID'
-  n_conv = 1
-
-  def conv_func(x, window_size, sensor_size, n_filter_in, n_filter_out, name='conv'):
-    with tf.variable_scope(name) as scope:
-      kernel = _variable_on_cpu(
-        'weights', [window_size, sensor_size, n_filter_in, n_filter_out], 
-        tf.contrib.layers.xavier_initializer())
-      biases = _variable_on_cpu(
-        'biases', [n_filter_out], tf.zeros_initializer())
-      conv = tf.nn.conv2d(x, kernel, [1, 1, 1, 1], padding='VALID')
-      pre_activation = tf.nn.bias_add(conv, biases)
-      conv_out = tf.nn.relu(pre_activation, name=scope.name)
-    return conv_out, kernel
-
-  # conv1
-  conv, conv_kernel = conv_func(signals, 
-    window_size, sensor_size, 1, n_filter, name='conv1')
-  # pool1
-  pool = tf.nn.max_pool(conv, 
-    ksize=[1, pooling_size, 1, 1], strides=[1, pooling_stride, 1, 1], 
-    padding='VALID', name='pool1')
-
-  # the remained conv & pool
-  for i in range(2, n_conv + 1):
-    # conv i
-    conv, _ = conv_func(pool, window_size//2 + 1, 1, n_filter, n_filter, name='conv%d'%i)
-    # pool i
-    this_pooling_stride = max(pooling_stride//2, 1)
-    pool = tf.nn.max_pool(conv, 
-      ksize=[1, pooling_size//2, 1, 1], 
-      strides=[1, this_pooling_stride, 1, 1], 
-      padding='VALID', name='pool%d'%i)
-
-  feature = tf.contrib.layers.flatten(pool, scope='flatten')
-  for i, n_hidden in enumerate(n_hidden_list):
-    feature = tf.contrib.layers.fully_connected(feature, n_hidden, scope='fully_conn%d'%i)
-
-  logits = tf.contrib.layers.linear(feature, 2, scope='final_node')
-
-  return logits
-
-def inference(signals):
-  """Build the CIFAR-10 model.
-
-  Args:
-    images: Images returned from distorted_inputs() or inputs().
-
-  Returns:
-    Logits.
-  """
-
-  batch_size, time_size, sensor_size, _ = signals.get_shape().as_list()
-
-  window_size = 5
-  pooling_size = 2
-  pooling_stride = 2
-  n_filter = 10
-  n_hidden = 30
-  # padding = 'SAME'
   padding = 'VALID'
   
   wd = 0.01
@@ -294,7 +212,6 @@ def inference(signals):
   with tf.variable_scope('conv1') as scope:
     kernel = _variable_with_group_weight_decay('weights',
                                          shape=[window_size, sensor_size, 1, n_filter],
-                                         stddev=5e-2,
                                          wd=wd,
                                          reg_type=reg_type)
     conv = tf.nn.conv2d(signals, kernel, [1, 1, 1, 1], padding=padding)
@@ -314,8 +231,7 @@ def inference(signals):
     # Move everything into depth so we can perform a single matrix multiply.
     reshape = tf.reshape(pool1, [batch_size, -1])
     dim = reshape.get_shape()[1].value
-    weights = _variable_with_group_weight_decay('weights', shape=[dim, n_hidden],
-                                          stddev=0.04)
+    weights = _variable_with_group_weight_decay('weights', shape=[dim, n_hidden])
     biases = _variable_on_cpu('biases', [n_hidden], tf.constant_initializer(0.1))
     local3 = tf.nn.relu(tf.matmul(reshape, weights) + biases, name=scope.name)
     _activation_summary(local3)
@@ -325,8 +241,7 @@ def inference(signals):
   # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
   # and performs the softmax internally for efficiency.
   with tf.variable_scope('softmax_linear') as scope:
-    weights = _variable_with_group_weight_decay('weights', [n_hidden, 2],
-                                          stddev=1/192.0)
+    weights = _variable_with_group_weight_decay('weights', [n_hidden, 2])
     biases = _variable_on_cpu('biases', [2],
                               tf.constant_initializer(0.0))
     softmax_linear = tf.add(tf.matmul(local3, weights), biases, name=scope.name)
@@ -335,7 +250,7 @@ def inference(signals):
   return softmax_linear
 
 
-def loss(logits, labels):
+def loss(logits, labels, test_metric=False):
   """Add L2Loss to all the trainable variables.
 
   Add summary for "Loss" and "Loss/avg".
@@ -348,11 +263,8 @@ def loss(logits, labels):
     Loss tensor of type float.
   """
   # Calculate the average cross entropy loss across the batch.
-  # labels = tf.cast(labels, tf.int64)
   cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
       labels=labels, logits=logits, name='cross_entropy_per_example')
-  # cross_entropy = tf.losses.softmax_cross_entropy(
-  #     onehot_labels=labels, logits=logits, scope='cross_entropy_per_example')
   cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy')
 
   # minor_weight = 5
@@ -369,11 +281,37 @@ def loss(logits, labels):
 
   # The total loss is defined as the cross entropy loss plus all of the weight
   # decay terms (L2 loss).
-  return tf.add_n(tf.get_collection('losses'), name='total_loss')
+  if test_metric is False:
+    return tf.add_n(tf.get_collection('losses'), name='total_loss')
+  else:    
+    def my_metrics(logits, labels):
+      true_y, pred_y = tf.argmax(labels, 1), tf.argmax(logits, 1)
+      correct_pred = tf.equal(true_y, pred_y)
+      incorrect_pred = tf.logical_not(correct_pred)
+
+      # confusion matrix
+      #               true 1   true 0
+      # predicted 1     TP       FP
+      # predicted 0     FN       TN
+      tp = tf.reduce_sum(tf.boolean_mask(true_y, correct_pred))
+      tn = tf.reduce_sum(tf.boolean_mask(1 - true_y, correct_pred))
+      fp = tf.reduce_sum(tf.boolean_mask(1 - true_y, incorrect_pred))
+      fn = tf.reduce_sum(tf.boolean_mask(true_y, incorrect_pred))
+
+      accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+      precision = tp / (tp + fp)
+      recall = tp / (tp + fn)
+      fscore = 2 / (1/precision + 1/recall)
+      return accuracy, precision, recall, fscore
+    
+    return (
+      tf.add_n(tf.get_collection('losses'), name='total_loss'),
+      my_metrics(logits, labels)
+    )
 
 
 def _add_loss_summaries(total_loss):
-  """Add summaries for losses in CIFAR-10 model.
+  """Add summaries for losses in model.
 
   Generates moving average for all losses and associated summaries for
   visualizing the performance of the network.
@@ -400,7 +338,7 @@ def _add_loss_summaries(total_loss):
 
 
 def train(total_loss, global_step):
-  """Train CIFAR-10 model.
+  """Train model.
 
   Create an optimizer and apply to all trainable variables. Add moving
   average for all trainable variables.
@@ -412,20 +350,12 @@ def train(total_loss, global_step):
   Returns:
     train_op: op for training.
   """
-  # # Decay the learning rate exponentially based on the number of steps.
-  # lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
-  #                                 global_step,
-  #                                 DECAY_STEPS,
-  #                                 LEARNING_RATE_DECAY_FACTOR,
-  #                                 staircase=True)
-  # tf.summary.scalar('learning_rate', lr)
 
   # Generate moving averages of all losses and associated summaries.
   loss_averages_op = _add_loss_summaries(total_loss)
 
   # Compute gradients.
   with tf.control_dependencies([loss_averages_op]):
-    # opt = tf.train.GradientDescentOptimizer(lr)
     opt = tf.train.AdamOptimizer(INITIAL_LEARNING_RATE)
     grads = opt.compute_gradients(total_loss)
 

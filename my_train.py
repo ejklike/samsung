@@ -2,7 +2,7 @@ import argparse
 from datetime import datetime
 import time
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 import tensorflow as tf
 from tensorflow.python.client import timeline
@@ -11,33 +11,27 @@ import my_graph
 
 FLAGS = tf.app.flags.FLAGS
 
-def my_metrics(logits, labels):
-    true_y, pred_y = tf.argmax(labels, 1), tf.argmax(logits, 1)
-    correct_pred = tf.equal(true_y, pred_y)
-    incorrect_pred = tf.logical_not(correct_pred)
+def save_results(iter, loss, acc, prec, rec, f1):
+  # record file existence check
+  record_fname = 'record.csv'
+  if not os.path.exists(record_fname):
+    with open(record_fname, 'w') as fout:
+      fout.write('datetime,data_fname,reg_type,wd,iter,loss,acc,prec,rec,f1')
+      fout.write('\n')
 
-    # confusion matrix
-    #               true 1   true 0
-    # predicted 1     TP       FP
-    # predicted 0     FN       TN
-    tp = tf.reduce_sum(tf.boolean_mask(true_y, correct_pred))
-    tn = tf.reduce_sum(tf.boolean_mask(1 - true_y, correct_pred))
-    fp = tf.reduce_sum(tf.boolean_mask(1 - true_y, incorrect_pred))
-    fn = tf.reduce_sum(tf.boolean_mask(true_y, incorrect_pred))
+  with open(record_fname, 'a') as fout:
+    fout.write('{},'.format(FLAGS.timestamp))
+    fout.write('{},{},{},'.format(FLAGS.data_fname, FLAGS.reg_type, FLAGS.wd))
+    fout.write('{},{},{},{},{},{},'.format(iter, loss, acc, prec, rec, f1))
+    fout.write('\n')
 
-    accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
-    precision = tp / (tp + fp)
-    recall = tp / (tp + fn)
-    fscore = 2 / (1/precision + 1/recall)
-    
-    return tp, tn, fp, fn, accuracy, precision, recall, fscore
 
 def train():
-  """Train CIFAR-10 for a number of steps."""
+  """Train a model for a number of steps."""
   with tf.Graph().as_default():
     global_step = tf.contrib.framework.get_or_create_global_step()
 
-    # Get images and labels for CIFAR-10.
+    # Get signals and labels
     # Force input pipeline to CPU:0 to avoid operations sometimes ending up on
     # GPU and resulting in a slow down.
     with tf.device('/cpu:0'):
@@ -48,24 +42,37 @@ def train():
 
     # Build a Graph that computes the logits predictions from the
     # inference model.
+    # window_size = 5
+    # n_filter = 10
+    # n_hidden = 30
+
     with tf.variable_scope('inference') as scope:
-      logits_trn = my_graph.inference(signals_trn)
+      logits_trn = my_graph.inference(signals_trn, reg_type=FLAGS.reg_type, wd=FLAGS.wd)
       scope.reuse_variables()
-      logits_val = my_graph.inference(signals_val)
+      logits_val = my_graph.inference(signals_val, reg_type=FLAGS.reg_type, wd=FLAGS.wd)
       scope.reuse_variables()
-      logits_tst = my_graph.inference(signals_tst)
+      logits_tst = my_graph.inference(signals_tst, reg_type=FLAGS.reg_type, wd=FLAGS.wd)
 
     # Calculate loss.
     loss_trn = my_graph.loss(logits_trn, labels_trn)
     loss_val = my_graph.loss(logits_val, labels_val)
-    loss_tst = my_graph.loss(logits_tst, labels_tst)
+    loss_tst, test_metric = my_graph.loss(logits_tst, labels_tst, test_metric=True)
 
     # test scores
-    tp, tn, fp, fn, acc, prec, rec, f1 = my_metrics(logits_tst, labels_tst)
+    acc, prec, rec, f1 = test_metric
 
     # Build a Graph that trains the model with one batch of examples and
     # updates the model parameters.
     train_op = my_graph.train(loss_trn, global_step)
+
+    # class _StopAtStepHook(tf.train.StopAtStepHook):
+
+    #   def after_run(self, run_context, run_values):
+    #     global_step = run_values.results
+    #     # if global_step >= self._last_step:
+    #     if global_step > 0 and global_step % self._last_step == 0:
+    #       run_context.request_stop()
+    #       print('---', global_step)
 
     class _LoggerHook(tf.train.SessionRunHook):
       """Logs loss and runtime."""
@@ -93,13 +100,14 @@ def train():
           print (format_str % (datetime.now(), self._step, loss_value,
                                examples_per_sec, sec_per_batch))
 
+
     class _EarlyStoppingHook(tf.train.SessionRunHook):
       """Early Stopping Hook"""
 
       def begin(self):
         self._step = -1
         self._tolerance_count = 0
-        self._tolerance_max = 100
+        self._tolerance_max = 1
         self._prev_loss_val_value = 1e10
 
       def before_run(self, run_context):
@@ -122,6 +130,7 @@ def train():
           format_str = ('>> validation loss = %.2f')
           print (format_str % loss_val_value)
 
+
     class _TestScoreHook(tf.train.SessionRunHook):
       """Test Score Hook"""
 
@@ -131,24 +140,37 @@ def train():
       def before_run(self, run_context):
         self._step += 1
         # return tf.train.SessionRunArgs([acc, prec, rec, f1])  # Asks for loss value.
-        return tf.train.SessionRunArgs([loss_tst, tp, tn, fp, fn, acc, prec, rec, f1])
+        return tf.train.SessionRunArgs([loss_tst, acc, prec, rec, f1])
 
       def after_run(self, run_context, run_values):
         if self._step % FLAGS.log_frequency == 0:
-          print('>> test scores: loss = %.3f, <%d,%d,%d,%d> acc = %.3f, prec = %.3f, rec = %.3f, f1 = %.3f' 
-              % tuple(run_values.results))
+          test_msg = (
+            '>> test scores; loss, acc, prec, rec, f1 = '
+            '%.3f, %.3f, %.3f, %.3f, %.3f'
+            ) % tuple(run_values.results)
+          print(test_msg)
+          self._run_values = run_values.results
 
+      def end(self, session):
+        save_results(self._step, *self._run_values)
+
+
+    # training session
+    print('-'*100)
     with tf.train.MonitoredTrainingSession(
         checkpoint_dir=FLAGS.train_dir,
         hooks=[tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
-               tf.train.NanTensorHook(loss_trn),
-               _LoggerHook(),
-               _EarlyStoppingHook(),
-               _TestScoreHook()],
+              tf.train.NanTensorHook(loss_trn),
+              _LoggerHook(),
+              _EarlyStoppingHook(),
+              _TestScoreHook()],
         config=tf.ConfigProto(
-            log_device_placement=FLAGS.log_device_placement)) as mon_sess:
+            log_device_placement=FLAGS.log_device_placement,
+            gpu_options=FLAGS.gpu_usage_option)) as mon_sess:
       while not mon_sess.should_stop():
         mon_sess.run(train_op)
+
+
 
         # run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
         # run_metadata = tf.RunMetadata()
@@ -160,7 +182,6 @@ def train():
         # ctf = tl.generate_chrome_trace_format()
         # with open('timeline.json', 'w') as f:
         #   f.write(ctf)
-
         
         # print(mon_sess.run(signals_trn)[0, 0, :])
         # print(mon_sess.run(signals_trn)[0, :])
@@ -176,25 +197,44 @@ def main(argv=None):  # pylint: disable=unused-argument
 if __name__ == '__main__':
   # parse input parameters
   parser = argparse.ArgumentParser()
-  parser.add_argument('--model', type=int, default=0,
-                      help='0/1/2')
-
   parser.add_argument('recipe_no', type=int, default=1,
                       help='recipe no')
   parser.add_argument('step_no', type=int, default=1,
                       help='step no')
-  parser.add_argument('device_id', type=str, default='PM6',
+  parser.add_argument('device_id', type=int, default=1,
                       help='device id')
+
+  parser.add_argument('--gpu_no', type=int, default=0,
+                      help='gpu device number')
+  parser.add_argument('--gpu_usage', type=float, default=0.9,
+                      help='gpu usage')
+  parser.add_argument('--model', type=int, default=0,
+                      help='0/1/2/3')
+  parser.add_argument('--wd', type=float, default=0,
+                      help='weight decaying factor')
+
   args, unparsed = parser.parse_known_args()
 
   # Input filename
-  FLAGS.data_fname = './{}-{}-{}.p'.format(
+  FLAGS.data_fname = './{}-{}-PM{}.p'.format(
     args.recipe_no, args.step_no, args.device_id)
+  # Model Type
+  FLAGS.reg_type = {
+    0: 'vanilla', 1: 'l1', 2: 'group1', 3: 'group2'
+  }[args.model]
+  # Weight Decaying constant
+  FLAGS.wd = None if args.model == 0 else args.wd
+  # GPU setting
+  os.environ['CUDA_VISIBLE_DEVICES'] = '%d' %args.gpu_no
+  # Assume that you have 12GB of GPU memory and want to allocate ~4GB: 0.333
+  FLAGS.gpu_usage_option = tf.GPUOptions(
+            per_process_gpu_memory_fraction=args.gpu_usage)
 
   # Directory where to write event logs and checkpoint.
-  FLAGS.train_dir = './tf_logs/train'
+  FLAGS.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+  FLAGS.train_dir = './tf_logs/train_{}_{}'.format(FLAGS.reg_type, FLAGS.timestamp)
   # Number of batches to run.
-  FLAGS.max_steps = 5000
+  FLAGS.max_steps = 3000
   # Whether to log device placement.
   FLAGS.log_device_placement = False
   # How often to log results to the console.

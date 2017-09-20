@@ -1,8 +1,10 @@
 import argparse
 from datetime import datetime
 import time
-import os
 import re
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2'
+
 
 import numpy as np
 import tensorflow as tf
@@ -12,11 +14,11 @@ import my_graph
 FLAGS = tf.app.flags.FLAGS
 
 def tower_loss(scope, signals, labels):
-  """Calculate the total loss on a single tower running the CIFAR model.
+  """Calculate the total loss on a single tower running the model.
 
   Args:
-    scope: unique prefix string identifying the CIFAR tower, e.g. 'tower_0'
-    images: Images. 4D tensor of shape [batch_size, height, width, 3].
+    scope: unique prefix string identifying the model tower, e.g. 'tower_0'
+    signals: Signals. 4D tensor of shape [batch_size, time_size, sensor_size, 1].
     labels: Labels. 1D tensor of shape [batch_size].
 
   Returns:
@@ -85,7 +87,7 @@ def average_gradients(tower_grads):
   return average_grads
 
 def train():
-  """Train CIFAR-10 for a number of steps."""
+  """Train a model for a number of steps."""
   with tf.Graph().as_default(), tf.device('/cpu:0'):
     # Create a variable to count the number of train() calls. This equals the
     # number of batches processed * FLAGS.num_gpus.
@@ -244,6 +246,6 @@ if __name__ == '__main__':
   FLAGS.log_frequency = 100
 
   # How many GPUs to use.
-  FLAGS.num_gpus = 4
+  FLAGS.num_gpus = 3
 
   tf.app.run()
