@@ -26,7 +26,8 @@ def _variable_on_cpu(name, shape, initializer):
   return var
 
 
-def _variable_with_group_weight_decay(name, shape, wd=None, reg_type='l1'):
+def _variable_with_group_weight_decay(name, shape, wd=None, reg_type='l1', 
+                                      add_loss=False):
   """Helper to create an initialized Variable with weight decay."""
   var = _variable_on_cpu(
       name,
@@ -34,7 +35,7 @@ def _variable_with_group_weight_decay(name, shape, wd=None, reg_type='l1'):
       # tf.contrib.layers.xavier_initializer(dtype=FLAGS.dtype))
       tf.contrib.layers.xavier_initializer(dtype=DTYPE))
 
-  if wd is not None:
+  if wd is not None and add_loss:
     regularizer = dict(
       group1=reg_wrapper.group_regularizer(wd),
       group2=reg_wrapper.group_regularizer(wd, unified=True),
@@ -46,39 +47,42 @@ def _variable_with_group_weight_decay(name, shape, wd=None, reg_type='l1'):
   return var
   
 
-def inputs(signals, labels):
+def inputs(signals, labels, test=False):
   # Input data, pin to CPU because rest of pipeline is CPU-only
   with tf.device('/cpu:0'):
-    input_signals = tf.constant(signals, dtype=FLAGS.dtype)
-    input_labels = tf.constant(labels, dtype=FLAGS.dtype)
+    signals = tf.constant(signals, dtype=FLAGS.dtype)
+    labels = tf.constant(labels, dtype=FLAGS.dtype)
     # print(input_signals, input_labels)
 
-    one_channel_shape = list(signals.shape) + [1]
-    input_signals = tf.reshape(input_signals, one_channel_shape, 
-                              name='reshaped_input_signal')
+    one_channel_shape = signals.get_shape().as_list() + [1]
+    signals = tf.reshape(signals, one_channel_shape, 
+                         name='reshaped_input_signal')
 
-  signal, label = tf.train.slice_input_producer(
-      [input_signals, input_labels], num_epochs=FLAGS.num_epochs)
-  # print(signal, label)
-  
   # the maximum number of elements in the queue
   capacity = 20 * FLAGS.batch_size
 
-  signals, labels = tf.train.batch(
-      [signal, label], batch_size=FLAGS.batch_size, num_threads=FLAGS.num_threads,
-      capacity=capacity)
-  # print(signals, labels)
+  # params to be determined by trn or tst
+  num_epochs = 1 if test else FLAGS.num_epochs
+  allow_smaller_final_batch = True if test else False
 
-  signals, labels = input_signals, input_labels
+  signal, label = tf.train.slice_input_producer(
+      [signals, labels], num_epochs=num_epochs)
+
+  signals, labels = tf.train.batch(
+      [signal, label], 
+      batch_size=FLAGS.batch_size, 
+      num_threads=FLAGS.num_threads,
+      capacity=capacity,
+      allow_smaller_final_batch=allow_smaller_final_batch)
 
   return signals, labels
 
 
-def inference(signals):
+def inference(signals, add_loss=False):
   _, _, sensor_size, _ = signals.get_shape().as_list()
 
-  window_size = 7
-  n_filter = 20
+  window_size = 5
+  n_filter = 50
   n_hidden = 100
   
   pooling_size = 2
@@ -92,7 +96,8 @@ def inference(signals):
       kernel = _variable_with_group_weight_decay('weights',
                       shape=shape,
                       wd=wd,
-                      reg_type=reg_type)
+                      reg_type=reg_type,
+                      add_loss=add_loss)
       conv = tf.nn.conv2d(signals, kernel, [1, 1, 1, 1], padding=padding)
       biases = _variable_on_cpu('biases', [shape[-1]], tf.constant_initializer(0.1))
       pre_activation = tf.nn.bias_add(conv, biases)
@@ -110,7 +115,9 @@ def inference(signals):
 
   def _flatten(x, name=None):
     name = 'flatten' if name is None else name
-      x = tf.reshape(x, [x.get_shape().as_list()[0], -1], name='flatten')
+    # x = tf.reshape(x, [FLAGS.batch_size, -1])
+    _, n_time, n_sensor, n_filter = x.get_shape().as_list()
+    x = tf.reshape(x, [-1, n_time * n_sensor * n_filter], name='flatten')
     return x
 
   def _fully_conn_layer(x, out_dim, activation_fn=tf.nn.relu, name=None):
@@ -138,13 +145,14 @@ def inference(signals):
   return _fully_conn_layer(x, 2, activation_fn=None, name='softmax_linear')
 
 
-def loss(logits, labels):
+def loss(logits, labels, add_loss=False):
   # Calculate the average cross entropy loss across the batch.
   cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
       labels=labels, logits=logits, name='cross_entropy_per_example')
   cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy_mean')
-  tf.add_to_collection('losses', cross_entropy_mean)
-  print(tf.get_collection('losses'))
+  if add_loss:
+    tf.add_to_collection('losses', cross_entropy_mean)
+    print(tf.get_collection('losses'))
   total_loss = tf.add_n(tf.get_collection('losses'), name='total_loss')
   reg_loss = total_loss - cross_entropy_mean
   return total_loss, cross_entropy_mean, reg_loss

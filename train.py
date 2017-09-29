@@ -11,7 +11,8 @@ import graph
 
 FLAGS = tf.app.flags.FLAGS
 FLAGS.dtype = tf.float32
-FLAGS.num_threads = 10
+FLAGS.test_size = None
+FLAGS.num_threads = 5
 
 def train():
   """Train a model for a number of steps."""
@@ -32,18 +33,18 @@ def train():
     # Generate batches
     signals_trn, labels_trn = graph.inputs(signals_trn, labels_trn)
     signals_val, labels_val = graph.inputs(signals_val, labels_val)
-    signals_tst, labels_tst = graph.inputs(signals_tst, labels_tst)
+    signals_tst, labels_tst = graph.inputs(signals_tst, labels_tst, test=True)
 
     # Build inference graph
     with tf.variable_scope('inference') as scope:
-      logits_trn = graph.inference(signals_trn)
+      logits_trn = graph.inference(signals_trn, add_loss=True)
       scope.reuse_variables()
       logits_val = graph.inference(signals_val)
       scope.reuse_variables()
       logits_tst = graph.inference(signals_tst)
 
     # Calculate loss.
-    loss_trn, xe_loss, reg_loss = graph.loss(logits_trn, labels_trn)
+    loss_trn, xe_loss, reg_loss = graph.loss(logits_trn, labels_trn, add_loss=True)
     loss_val, _, _ = graph.loss(logits_val, labels_val)
 
     # Build a Graph that trains the model with one batch of examples and
@@ -53,7 +54,10 @@ def train():
     # Add the Op to compare the logits to the labels during evaluation.
     acc, prec, rec, f1 = graph.evaluation(logits_tst, labels_tst)
 
-    # training session
+    # trainable variables
+    print('-'*50)
+    for var in tf.trainable_variables():
+      print(var.name)
     print('-'*50)
 
     # Build the summary operation based on the TF collection of Summaries.
@@ -82,7 +86,8 @@ def train():
     try:
       step = 0
       prev_loss_val_value = 1e10
-      tolerance_count, max_tolerance_count = 0, 3 * FLAGS.log_frequency
+      best_test_values = None
+      tolerance_count, max_tolerance_count = 0, 10 * FLAGS.log_frequency
       while not coord.should_stop():
         start_time = time.time()
 
@@ -91,19 +96,16 @@ def train():
 
         duration = time.time() - start_time
 
-        # Validation to determine early stopping.
-        loss_val_value = sess.run(loss_val)
-        if loss_val_value > prev_loss_val_value:
-          tolerance_count += 1
-        else:
-          tolerance_count = 0
-        if tolerance_count >= max_tolerance_count:
+        # Maximum iteration limit
+        if step >= FLAGS.max_steps or loss_value < 1e-3:
           coord.request_stop()
-        prev_loss_val_value = loss_val_value
 
         # Write the summaries and print an overview fairly often.
         if step % FLAGS.log_frequency == 0:
           examples_per_sec = FLAGS.batch_size / duration
+
+          # Validation to determine early stopping.
+          loss_val_value = sess.run(loss_val)
 
           # Print status to stdout.
           print('Step %d: trn_loss = %.2f (%.2f + %.2f), '
@@ -111,17 +113,29 @@ def train():
                 % (step, loss_value, *sess.run([xe_loss, reg_loss]), 
                    loss_val_value, duration, examples_per_sec))
 
+          # Validation part.
+          if loss_val_value > prev_loss_val_value:
+            tolerance_count += 1
+          else:
+            tolerance_count = 0
+            best_test_values = sess.run([acc, prec, rec, f1])
+            print('>> Best validation')
+            print('>>', best_test_values)
+          if tolerance_count >= max_tolerance_count:
+            coord.request_stop()
+          prev_loss_val_value = loss_val_value
+
           # Update the events file.
           summary_str = sess.run(summary_op)
           summary_writer.add_summary(summary_str, step)
 
-        # Save a checkpoint periodically.
-        if step % (3 * FLAGS.log_frequency) == 0:
+        # # Save a checkpoint periodically.
+        # if step % (3 * FLAGS.log_frequency) == 0:
           # print('Saving')
           # saver.save(sess, FLAGS.train_dir, global_step=step)
-          test_values = sess.run([acc, prec, rec, f1])
-          print('>> Test score:')
-          print('>>', test_values)
+          # test_values = sess.run([acc, prec, rec, f1])
+          # print('>> Test score:')
+          # print('>>', test_values)
           # print('>> Test score: {:.3f}, {:.3f}, {:.3f}, {:.3f}'.format(test_values))
 
         step += 1
@@ -171,13 +185,13 @@ if __name__ == '__main__':
 
   # Data Type
   FLAGS.data_type = args.data_type
-  if FLAGS.data_type == 'drill':
+  if FLAGS.data_type[:3] == 'opp':
     FLAGS.batch_size = 100
-    FLAGS.num_epochs = 1
+    FLAGS.num_epochs = 3
     # os.environ['CUDA_VISIBLE_DEVICES'] = '1' if args.gpu_no == '-1' else args.gpu_no
   elif FLAGS.data_type == 'samsung':
-    FLAGS.batch_size = 100
-    FLAGS.num_epochs = 1
+    FLAGS.batch_size = 1000
+    FLAGS.num_epochs = 100
     # os.environ['CUDA_VISIBLE_DEVICES'] = '0' if args.gpu_no == '-1' else args.gpu_no
   
   # GPU setting
@@ -196,7 +210,8 @@ if __name__ == '__main__':
   
   FLAGS.lr = args.lr
   FLAGS.log_frequency = args.log_freq
-
+  # Number of batches to run.
+  FLAGS.max_steps = 2000
 
 
   
@@ -208,8 +223,7 @@ if __name__ == '__main__':
   
   
   
-  # # Number of batches to run.
-  # FLAGS.max_steps = 3000
+
   # # Whether to log device placement.
   # FLAGS.log_device_placement = False
   

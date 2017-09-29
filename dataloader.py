@@ -15,12 +15,25 @@ def load(which_data, train=True):
   else:
     data_fname = './data/{}_test.p'.format(which_data)
 
-  if which_data == 'drill':
+  if which_data[:3] == 'opp':
     raw_data = pickle.load(open(data_fname, 'rb'))
     signals = raw_data['signals']
     labels_loc = raw_data['labels_locomotion']
     labels_ges = raw_data['labels_gesture']
-    labels = labels_loc[:, 0:2]
+    
+    # gesture label order
+    #      0, 504605, 504608, 504611, 504616, 504617, 504619, 504620,
+    # 505606, 506605, 506608, 506611, 506616, 506617, 506619, 506620,
+    # 507621, 508612
+    # locomotion label order
+    # 0, 101, 102, 104, 105
+
+    label_idx = 1
+    labels_one_col = labels_loc[:, label_idx]
+    def binary_to_dummies(arr):
+        arr = arr.reshape(-1, 1)
+        return np.concatenate((1-arr, arr), axis=1)
+    labels = binary_to_dummies(labels_one_col)
     class_count = np.sum(labels, axis=0)
     print('class imbalance: {}, {} ({:.03}%)'.format(
         *class_count, 
@@ -36,4 +49,8 @@ def load(which_data, train=True):
     raise Exception('Existing no data matching with your input str.')
   
   print(signals.shape, labels.shape)
+
+  signals = signals.astype(np.float32)
+  labels = labels.astype(np.float32)
+
   return signals, labels
