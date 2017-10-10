@@ -2,6 +2,7 @@
 __pycache__
 
 tf_logs
+tf_models
 log
 data
 trash
